@@ -248,6 +248,8 @@ globalkeys = gears.table.join(
       {description = "Terminal", group = "launcher"}),
    awful.key({ modkey,           }, "w",      function () awful.spawn("x-www-browser") end,
       {description="Web Browser", group="awesome"}),
+   awful.key({ modkey,           }, "f",      function () awful.spawn("thunar") end,
+      {description="Thunar", group="launcher"}),
    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
       {description = "view previous", group = "tag"}),
    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -343,12 +345,12 @@ globalkeys = gears.table.join(
 )
 
 clientkeys = gears.table.join(
-   awful.key({ modkey,           }, "f",
-      function (c)
-         c.fullscreen = not c.fullscreen
-         c:raise()
-      end,
-      {description = "toggle fullscreen", group = "client"}),
+   -- awful.key({ modkey,           }, "f",
+   --    function (c)
+   --       c.fullscreen = not c.fullscreen
+   --       c:raise()
+   --    end,
+   --    {description = "toggle fullscreen", group = "client"}),
    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill() end,
       {description = "close", group = "client"}),
    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle,

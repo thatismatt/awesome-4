@@ -24,6 +24,8 @@ theme.border_normal = "#444444"
 theme.border_focus  = "#9900ff"
 theme.border_marked = "#ff00ff"
 
+theme.hotkeys_modifiers_fg = "#9900ff"
+
 -- There are other variable sets overriding the default one when defined, the sets are:
 -- [taglist|tasklist]_[bg|fg]_[focus|urgent]
 -- titlebar_[bg|fg]_[normal|focus]

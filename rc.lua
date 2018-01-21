@@ -35,6 +35,23 @@ do
 end
 -- }}}
 
+-- {{{ Prime - extra commands
+prime.add_commands({
+      d = {
+         name = "dump",
+         handle = utils.dump
+      },
+      l = {
+         name = "log",
+         handle = function (v)
+            utils.log(tostring(v))
+            return "LOGGED"
+         end
+      }
+})
+prime.default_command_id = "d"
+-- }}}
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")

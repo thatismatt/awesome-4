@@ -100,17 +100,15 @@ end
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
-   { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", terminal .. " -e man awesome" },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end}
+   { "Hotkeys", function() return false, hotkeys_popup.show_help end},
+   { "Restart", awesome.restart },
+   { "Quit", function() awesome.quit() end}
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+mymainmenu = awful.menu({ items = {
+                             { "Awesome", myawesomemenu, beautiful.awesome_icon },
                              { "Debian", debian.menu.Debian_menu.Debian },
-                             { "open terminal", terminal }
-}
-                       })
+                             { "Terminal", terminal } } })
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })

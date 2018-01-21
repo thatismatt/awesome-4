@@ -243,6 +243,8 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
       {description="show help", group="awesome"}),
+   awful.key({ modkey,           }, "w",      function () awful.spawn("x-www-browser") end,
+      {description="Web Browser", group="awesome"}),
    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
       {description = "view previous", group = "tag"}),
    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -262,7 +264,7 @@ globalkeys = gears.table.join(
       end,
       {description = "focus previous by index", group = "client"}
    ),
-   awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+   awful.key({ modkey,           }, "z", function () mymainmenu:show() end,
       {description = "show main menu", group = "awesome"}),
 
    -- Layout manipulation

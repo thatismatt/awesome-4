@@ -1,15 +1,20 @@
-local gears         = require("gears")
-local awful         = require("awful")
-                      require("awful.autofocus")
-local wibox         = require("wibox")
-local beautiful     = require("beautiful")
-local naughty       = require("naughty")
-local menubar       = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
-                      require("awful.hotkeys_popup.keys")
-local debian        = require("debian.menu")
-utils       = require("utils")
-prime       = require("prime")
+---------------------------------
+-- thatismatt's awesome config --
+---------------------------------
+
+gears         = require("gears")
+awful         = require("awful")
+                require("awful.autofocus")
+wibox         = require("wibox")
+beautiful     = require("beautiful")
+naughty       = require("naughty")
+menubar       = require("menubar")
+hotkeys_popup = require("awful.hotkeys_popup").widget
+                require("awful.hotkeys_popup.keys")
+debian        = require("debian.menu")
+
+prime         = require("prime")
+utils         = require("utils")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

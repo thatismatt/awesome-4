@@ -243,6 +243,9 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
       {description="show help", group="awesome"}),
+
+   awful.key({ modkey,           }, "t", function () awful.spawn(terminal) end,
+      {description = "Terminal", group = "launcher"}),
    awful.key({ modkey,           }, "w",      function () awful.spawn("x-www-browser") end,
       {description="Web Browser", group="awesome"}),
    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -287,9 +290,6 @@ globalkeys = gears.table.join(
       end,
       {description = "go back", group = "client"}),
 
-   -- Standard program
-   awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-      {description = "open a terminal", group = "launcher"}),
    awful.key({ modkey, "Control" }, "r", awesome.restart,
       {description = "reload awesome", group = "awesome"}),
    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -357,8 +357,8 @@ clientkeys = gears.table.join(
       {description = "move to master", group = "client"}),
    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen() end,
       {description = "move to screen", group = "client"}),
-   awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop end,
-      {description = "toggle keep on top", group = "client"}),
+   -- awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop end,
+   --    {description = "toggle keep on top", group = "client"}),
    awful.key({ modkey,           }, "n",
       function (c)
          -- The client currently has the input focus, so it cannot be

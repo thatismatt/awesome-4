@@ -240,6 +240,8 @@ globalkeys = gears.table.join(
 
    awful.key({ modkey,           }, "t", function () awful.spawn(terminal) end,
       { description = "Terminal", group = "launcher" }),
+   awful.key({ modkey,           }, "e", function () awful.spawn(emacs) end,
+      { description = "Emacs", group = "launcher" }),
    awful.key({ modkey,           }, "w",      function () awful.spawn("x-www-browser") end,
       { description = "Web Browser", group="launcher" }),
    awful.key({ modkey,           }, "f",      function () awful.spawn("thunar") end,

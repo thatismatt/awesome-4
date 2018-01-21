@@ -242,12 +242,12 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-      {description="show help", group="awesome"}),
+      {description="Hotkeys", group="awesome"}),
 
    awful.key({ modkey,           }, "t", function () awful.spawn(terminal) end,
       {description = "Terminal", group = "launcher"}),
    awful.key({ modkey,           }, "w",      function () awful.spawn("x-www-browser") end,
-      {description="Web Browser", group="awesome"}),
+      {description="Web Browser", group="launcher"}),
    awful.key({ modkey,           }, "f",      function () awful.spawn("thunar") end,
       {description="Thunar", group="launcher"}),
    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,

@@ -353,26 +353,22 @@ function tag_prev (c)
 end
 
 clientkeys = gears.table.join(
+   awful.key({ modkey, "Shift"   }, "m",      function (c) c.maximized = not c.maximized ; c:raise() end,
+      { description = "(Un)maximize", group = "client" }),
    awful.key({ modkey, "Shift"   }, "n",      function (c) c.minimized = true end,
-      { description = "Minimize", group = "client" }),
+      { description = "Minimize",     group = "client" }),
    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill() end,
-      { description = "Close", group = "client" }),
-   awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle,
-      { description = "(Un)float", group = "client" }),
-   awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-      { description = "Masterify", group = "client" }),
+      { description = "Close",        group = "client" }),
+   awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle,
+      { description = "(Un)float",    group = "client" }),
    awful.key({ modkey, "Shift"   }, "h",      tag_prev,
       { description = "Previous tag", group = "client" }),
    awful.key({ modkey, "Shift"   }, "l",      tag_next,
       { description = "Next tag",     group = "client" }),
+   awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+      { description = "Masterify",    group = "client" }),
    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen() end,
-      { description = "Other screen", group = "client" }),
-   awful.key({ modkey, "Shift"   }, "m",
-      function (c)
-         c.maximized = not c.maximized
-         c:raise()
-      end,
-      { description = "(Un)maximize", group = "client" })
+      { description = "Other screen", group = "client" })
 )
 
 -- Bind all key numbers to tags.

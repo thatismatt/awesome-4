@@ -367,7 +367,7 @@ clientkeys = gears.table.join(
       { description = "Next tag",     group = "client" }),
    awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end,
       { description = "Masterify",    group = "client" }),
-   awful.key({ modkey,           }, "o",      function (c) c:move_to_screen() end,
+   awful.key({ modkey, "Shift"   }, "o",      function (c) c:move_to_screen() end,
       { description = "Other screen", group = "client" })
 )
 

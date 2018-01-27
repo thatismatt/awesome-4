@@ -233,6 +233,14 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+function restore_and_focus ()
+   local restored = awful.client.restore(mouse.screen)
+   if restored then
+      client.focus = restored
+      restored:raise()
+   end
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -302,15 +310,7 @@ globalkeys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end,
       { description = "select previous", group = "layout" }),
 
-   awful.key({ modkey, "Shift" },   "r",
-      function ()
-         local c = awful.client.restore()
-         -- Focus restored client
-         if c then
-            client.focus = c
-            c:raise()
-         end
-      end,
+   awful.key({ modkey, "Shift"   }, "r",     restore_and_focus,
       { description = "Restore", group = "client" }),
 
    -- Prompt

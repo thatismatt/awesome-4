@@ -340,6 +340,18 @@ globalkeys = gears.table.join(
       { description = "show the menubar", group = "launcher" })
 )
 
+function tag_next (c)
+   awful.tag.viewnext()
+   c:tags({ awful.tag.selected() })
+   client.focus = c
+end
+
+function tag_prev (c)
+   awful.tag.viewprev()
+   c:tags({ awful.tag.selected() })
+   client.focus = c
+end
+
 clientkeys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "n",      function (c) c.minimized = true end,
       { description = "Minimize", group = "client" }),
@@ -349,6 +361,10 @@ clientkeys = gears.table.join(
       { description = "(Un)float", group = "client" }),
    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
       { description = "Masterify", group = "client" }),
+   awful.key({ modkey, "Shift"   }, "h",      tag_prev,
+      { description = "Previous tag", group = "client" }),
+   awful.key({ modkey, "Shift"   }, "l",      tag_next,
+      { description = "Next tag",     group = "client" }),
    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen() end,
       { description = "Other screen", group = "client" }),
    awful.key({ modkey, "Shift"   }, "m",

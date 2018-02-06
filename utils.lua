@@ -78,9 +78,19 @@ utils.map_kv = function (tbl, f)
 end
 
 utils.keys = function (tbl)
-   local ks = {}
-   table.foreach(tbl, function (k, v) ks[#ks + 1] = k end)
-   return ks
+   local r = {}
+   for k, v in pairs(tbl) do
+      table.insert(r, k)
+   end
+   return r
+end
+
+utils.vals = function (tbl)
+   local r = {}
+   for k, v in pairs(tbl) do
+      table.insert(r, v)
+   end
+   return r
 end
 
 utils.concat = function (tbls)

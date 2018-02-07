@@ -206,12 +206,29 @@ end
 
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- {{{ Tags
+tags = { by_screen = {} }
+tags.count = 9
+
+function screen_tags (s, names)
+   tags.by_screen[s] = awful.tag(names, s, awful.layout.layouts[1])
+   for k, v in pairs(names) do
+      tags[v] = tags.by_screen[s][k]
+   end
+end
+
+if screen.count() == 2 then
+   screen_tags(1, utils.range(1, 3))
+   screen_tags(2, utils.range(4, tags.count))
+else
+   screen_tags(1, utils.range(1, tags.count))
+end
+-- }}}
+
 awful.screen.connect_for_each_screen(function(s)
+
       -- Wallpaper
       set_wallpaper(s)
-
-      -- Each screen has its own tag table.
-      awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
       -- Create a promptbox for each screen
       s.mypromptbox = awful.widget.prompt()

@@ -119,7 +119,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" %a %d %b %Y, %H:%M ")
 mytextclock:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn("gsimplecal") end)))
 
 -- Create a wibox for each screen and add it

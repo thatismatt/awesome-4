@@ -120,6 +120,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
+mytextclock:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn("gsimplecal") end)))
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -436,6 +437,8 @@ awful.rules.rules = {
                     buttons = clientbuttons,
                     screen = awful.screen.preferred,
                     placement = awful.placement.no_overlap + awful.placement.no_offscreen } },
+   { rule = { name = "gsimplecal" },
+     properties = { floating = true } }
 }
 -- }}}
 

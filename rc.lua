@@ -388,7 +388,9 @@ clientkeys = gears.table.join(
    awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end,
       { description = "Masterify",    group = "client" }),
    awful.key({ modkey, "Shift"   }, "o",      function (c) c:move_to_screen() end,
-      { description = "Other screen", group = "client" })
+      { description = "Other screen", group = "client" }),
+   awful.key({ modkey, "Shift"   }, "d",      function (c) debug_client = c end,
+      { description = "Debug client", group = "client" })
 )
 
 -- Bind all key numbers to tags.

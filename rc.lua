@@ -277,6 +277,13 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+function focus_other_screen ()
+   awful.screen.focus_relative(1)
+   if awful.screen.focused() ~= client.focus.screen then
+      client.focus = nil
+   end
+end
+
 function restore_and_focus ()
    local restored = awful.client.restore(mouse.screen)
    if restored then
@@ -311,7 +318,7 @@ globalkeys = gears.table.join(
       { description = "Next", group = "client" }),
    awful.key({ modkey,           }, "Up",     function () awful.client.focus.byidx(-1) end,
       { description = "Previous", group = "client" }),
-   awful.key({ modkey            }, "o",      function () awful.screen.focus_relative(1) end,
+   awful.key({ modkey            }, "o",      focus_other_screen,
       { description = "Other Screen", group = "screen" }),
 
    awful.key({ modkey,           }, "z",      menu.main.toggle_at_corner,

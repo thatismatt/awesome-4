@@ -254,6 +254,8 @@ globalkeys = gears.table.join(
       { description = "Web Browser", group = "launcher" }),
    awful.key({ modkey,           }, "f",      function () awful.spawn("thunar") end,
       { description = "Thunar", group = "launcher" }),
+   awful.key({ modkey,           }, "v",      function () awful.spawn("pavucontrol") end,
+      { description = "Volume", group = "launcher" }),
    awful.key({ modkey,           }, "h",      awful.tag.viewprev,
       { description = "view previous", group = "tag" }),
    awful.key({ modkey,           }, "l",      awful.tag.viewnext,

@@ -98,22 +98,54 @@ end
 -- }}}
 
 -- {{{ Menu
--- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "Hotkeys", function() return false, hotkeys_popup.show_help end },
+menu = {}
+
+menu.icon = function (dir, name)
+   return string.format("/usr/share/icons/Faenza/%s/32/%s.png", dir, name)
+end
+
+menu.awesome = {
+   { "Manual",  terminal .. " -e man awesome" },
+   { "Hotkeys", function () return false, hotkeys_popup.show_help end },
    { "Restart", awesome.restart },
-   { "Quit", function() awesome.quit() end }
+   { "Quit",    awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = {
-                             { "Awesome", myawesomemenu, beautiful.awesome_icon },
-                             { "Debian", debian.menu.Debian_menu.Debian },
-                             { "Terminal", terminal } } })
+menu.power = {
+   { "Power Off", "systemctl poweroff",  menu.icon("actions", "system-shutdown") },
+   { "Suspend",   "systemctl suspend",   menu.icon("apps", "system-suspend") },
+   { "Restart",   "systemctl reboot",    menu.icon("apps", "system-restart") }
+}
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+menu.screens = {
+   { "Auto",   "/home/matt/scripts/screen-auto.sh" },
+   { "Single", "/home/matt/scripts/screen-single.sh" },
+   { "Dual",   "/home/matt/scripts/screen-dual.sh" },
+   { "Arandr", "arandr"}
+}
 
--- Menubar configuration
+menu.main = awful.menu({
+      { "Awesome",      menu.awesome,    beautiful.awesome_icon },
+      { "Terminal",     terminal,        menu.icon("apps", "xterm") },
+      { "Thunar",       "thunar",        menu.icon("apps", "thunar") },
+      { "Emacs",        emacs,           menu.icon("apps", "emacs") },
+      { "Firefox",      "firefox",       menu.icon("apps", "firefox") },
+      { "Chrome",       "google-chrome", menu.icon("apps", "google-chrome") },
+      { "Gimp",         "gimp",          menu.icon("apps", "gimp") },
+      { "LXAppearance", "lxappearance",  menu.icon("categories", "preferences-desktop") },
+      { "Screens",      menu.screens,    menu.icon("devices", "monitor") },
+      { "Power",        menu.power,      menu.icon("actions", "system-shutdown") }
+})
+
+menu.main.toggle_at_corner = function ()
+   menu.main:toggle({ coords = { x = 0, y = 0 } })
+end
+
+menu.launcher = awful.widget.launcher({
+      image = beautiful.awesome_icon,
+      menu = menu.main
+})
+
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
@@ -211,7 +243,7 @@ awful.screen.connect_for_each_screen(function(s)
          layout = wibox.layout.align.horizontal,
          { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            menu.launcher,
             s.mytaglist,
             s.mypromptbox,
          },
@@ -228,7 +260,7 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-                awful.button({ }, 3, function () mymainmenu:toggle() end),
+                awful.button({ }, 3, function () menu.main:toggle() end),
                 awful.button({ }, 4, awful.tag.viewnext),
                 awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -271,7 +303,7 @@ globalkeys = gears.table.join(
    awful.key({ modkey            }, "o",      function () awful.screen.focus_relative(1) end,
       { description = "Other Screen", group = "screen" }),
 
-   awful.key({ modkey,           }, "z",      function () mymainmenu:show() end,
+   awful.key({ modkey,           }, "z",      menu.main.toggle_at_corner,
       { description = "Menu", group = "awesome" }),
 
    -- Layout manipulation

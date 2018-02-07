@@ -267,6 +267,9 @@ globalkeys = gears.table.join(
       { description = "Next", group = "client" }),
    awful.key({ modkey,           }, "k",      function () awful.client.focus.byidx(-1) end,
       { description = "Previous", group = "client" }),
+   awful.key({ modkey            }, "o",      function () awful.screen.focus_relative(1) end,
+      { description = "Other Screen", group = "screen" }),
+
    awful.key({ modkey,           }, "z", function () mymainmenu:show() end,
       { description = "Menu", group = "awesome" }),
 
@@ -275,10 +278,6 @@ globalkeys = gears.table.join(
       { description = "Move next", group = "client" }),
    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end,
       { description = "Move previous", group = "client" }),
-   awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
-      { description = "focus the next screen", group = "screen" }),
-   awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
-      { description = "focus the previous screen", group = "screen" }),
    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
       { description = "Jump to urgent", group = "client" }),
    awful.key({ modkey,           }, "Tab",

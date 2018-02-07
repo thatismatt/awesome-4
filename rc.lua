@@ -385,12 +385,16 @@ globalkeys = gears.table.join(
 )
 
 function tag_next (c)
+   awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client get
+                                -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewnext()
    c:tags({ awful.tag.selected() })
    client.focus = c
 end
 
 function tag_prev (c)
+   awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client get
+                                -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewprev()
    c:tags({ awful.tag.selected() })
    client.focus = c

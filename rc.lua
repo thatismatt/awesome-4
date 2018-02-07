@@ -270,7 +270,7 @@ globalkeys = gears.table.join(
    awful.key({ modkey            }, "o",      function () awful.screen.focus_relative(1) end,
       { description = "Other Screen", group = "screen" }),
 
-   awful.key({ modkey,           }, "z", function () mymainmenu:show() end,
+   awful.key({ modkey,           }, "z",      function () mymainmenu:show() end,
       { description = "Menu", group = "awesome" }),
 
    -- Layout manipulation

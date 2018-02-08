@@ -96,7 +96,7 @@ awful.layout.layouts = {
 -- }}}
 
 -- {{{ Helper functions
-local function client_menu_toggle_fn()
+local function client_menu_toggle()
    local instance = nil
    return function ()
       if instance and instance.wibox.visible then
@@ -234,7 +234,7 @@ local tasklist_buttons = gears.table.join(
          end
    end),
    awful.button({ }, 2, function (c) c:kill() end),
-   awful.button({ }, 3, client_menu_toggle_fn()),
+   awful.button({ }, 3, client_menu_toggle()),
    awful.button({ }, 4, focus_raise(-1)),
    awful.button({ }, 5, focus_raise(1)))
 

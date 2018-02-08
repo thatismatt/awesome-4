@@ -95,6 +95,40 @@ local function client_menu_toggle_fn()
       end
    end
 end
+
+function focus_other_screen ()
+   awful.screen.focus_relative(1)
+   if awful.screen.focused() ~= client.focus.screen then
+      client.focus = nil
+   end
+end
+
+function restore_and_focus ()
+   local restored = awful.client.restore(mouse.screen)
+   if restored then
+      client.focus = restored
+      restored:raise()
+   end
+end
+
+function focus_raise (direction)
+   return function ()
+      local cls = utils.filter(
+         utils.flatmap(utils.range(screen.count()), awful.client.visible),
+         function (c) return awful.client.focus.filter(c) or c == client.focus end)
+      local client_to_focus = nil
+      for idx, c in ipairs(cls) do
+         if c == client.focus then
+            client_to_focus = cls[awful.util.cycle(#cls, idx + direction)]
+         end
+      end
+      if client_to_focus then
+         client.focus = client_to_focus
+         client.focus:raise()
+         awful.screen.focus(client_to_focus.screen)
+      end
+   end
+end
 -- }}}
 
 -- {{{ Menu
@@ -276,40 +310,6 @@ root.buttons(gears.table.join(
                 awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-
-function focus_other_screen ()
-   awful.screen.focus_relative(1)
-   if awful.screen.focused() ~= client.focus.screen then
-      client.focus = nil
-   end
-end
-
-function restore_and_focus ()
-   local restored = awful.client.restore(mouse.screen)
-   if restored then
-      client.focus = restored
-      restored:raise()
-   end
-end
-
-function focus_raise (direction)
-   return function ()
-      local cls = utils.filter(
-         utils.flatmap(utils.range(screen.count()), awful.client.visible),
-         function (c) return awful.client.focus.filter(c) or c == client.focus end)
-      local client_to_focus = nil
-      for idx, c in ipairs(cls) do
-         if c == client.focus then
-            client_to_focus = cls[awful.util.cycle(#cls, idx + direction)]
-         end
-      end
-      if client_to_focus then
-         client.focus = client_to_focus
-         client.focus:raise()
-         awful.screen.focus(client_to_focus.screen)
-      end
-   end
-end
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(

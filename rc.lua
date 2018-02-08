@@ -424,8 +424,6 @@ clientkeys = gears.table.join(
       { description = "(Un)maximize", group = "client" }),
    awful.key({ modkey, "Shift"   }, "n",      function (c) c.minimized = true end,
       { description = "Minimize",     group = "client" }),
-   awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill() end,
-      { description = "Close",        group = "client" }),
    awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle,
       { description = "(Un)float",    group = "client" }),
    awful.key({ modkey, "Shift"   }, "Left",   tag_prev,

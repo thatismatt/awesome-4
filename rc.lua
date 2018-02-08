@@ -292,6 +292,25 @@ function restore_and_focus ()
    end
 end
 
+function focus_raise (direction)
+   return function ()
+      local cls = utils.filter(
+         utils.flatmap(utils.range(screen.count()), awful.client.visible),
+         function (c) return awful.client.focus.filter(c) or c == client.focus end)
+      local client_to_focus = nil
+      for idx, c in ipairs(cls) do
+         if c == client.focus then
+            client_to_focus = cls[awful.util.cycle(#cls, idx + direction)]
+         end
+      end
+      if client_to_focus then
+         client.focus = client_to_focus
+         client.focus:raise()
+         awful.screen.focus(client_to_focus.screen)
+      end
+   end
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -314,9 +333,9 @@ globalkeys = gears.table.join(
    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
       { description = "go back", group = "tag" }),
 
-   awful.key({ modkey,           }, "Down",   function () awful.client.focus.byidx( 1) end,
+   awful.key({ modkey,           }, "Down",   focus_raise(1),
       { description = "Next", group = "client" }),
-   awful.key({ modkey,           }, "Up",     function () awful.client.focus.byidx(-1) end,
+   awful.key({ modkey,           }, "Up",     focus_raise(-1),
       { description = "Previous", group = "client" }),
    awful.key({ modkey            }, "o",      focus_other_screen,
       { description = "Other Screen", group = "screen" }),

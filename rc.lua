@@ -110,7 +110,7 @@ end
 
 function focus_other_screen ()
    awful.screen.focus_relative(1)
-   if awful.screen.focused() ~= client.focus.screen then
+   if client.focus and awful.screen.focused() ~= client.focus.screen then
       client.focus = nil
    end
 end

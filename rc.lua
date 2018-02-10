@@ -45,6 +45,18 @@ prime.add_commands({
             utils.log(tostring(v))
             return "LOGGED"
          end
+      },
+      k = {
+         name = "keys",
+         handle = function (v)
+            return utils.dump(utils.keys(v))
+         end
+      },
+      v = {
+         name = "vals",
+         handle = function (v)
+            return utils.dump(utils.vals(v))
+         end
       }
 })
 prime.default_command_id = "d"

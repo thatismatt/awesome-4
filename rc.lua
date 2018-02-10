@@ -11,8 +11,6 @@ naughty       = require("naughty")
 menubar       = require("menubar")
 hotkeys_popup = require("awful.hotkeys_popup").widget
                 require("awful.hotkeys_popup.keys")
-debian        = require("debian.menu")
-
 prime         = require("prime")
 utils         = require("utils")
 

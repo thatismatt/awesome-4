@@ -5,6 +5,8 @@
 -- load the default theme to use it as the base for this custom theme
 local success, theme = pcall(function () return dofile("/usr/share/awesome/themes/default/theme.lua") end)
 
+local gfs = require("gears.filesystem")
+
 theme.font          = "Liberation Sans 12"
 
 theme.fg_normal     = "#999999"
@@ -40,11 +42,11 @@ theme.useless_gap = 5
 theme.menu_height = "24"
 theme.menu_width  = "150"
 
-theme.wallpaper = "/home/matt/Pictures/wallpaper"
+theme.wallpaper = os.getenv("HOME") .. "/Pictures/wallpaper"
 
 -- theme.layout_matilla = "/usr/share/awesome/themes/default/layouts/tilew.png"
 
-theme.awesome_icon = "/home/matt/.config/awesome/awesome_icon.png"
+theme.awesome_icon = gfs.get_dir("config") .. "awesome_icon.png"
 
 -- theme.tasklist_plain_task_name = true
 

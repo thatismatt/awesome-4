@@ -3,6 +3,7 @@
 ---------------------------------
 
 gears         = require("gears")
+gfs           = require("gears.filesystem")
 awful         = require("awful")
                 require("awful.autofocus")
 wibox         = require("wibox")
@@ -32,6 +33,8 @@ do
    )
 end
 -- }}}
+
+home_dir = os.getenv("HOME")
 
 -- {{{ Prime - extra commands
 prime.add_commands({
@@ -63,7 +66,7 @@ prime.default_command_id = "d"
 -- }}}
 
 -- {{{ Variable definitions
-beautiful.init("/home/matt/.config/awesome/theme.lua")
+beautiful.init(gfs.get_dir("config") .. "theme.lua")
 
 terminal = "x-terminal-emulator"
 emacs = "emacsclient -c -a="
@@ -161,9 +164,9 @@ menu.power = {
 }
 
 menu.screens = {
-   { "Auto",   "/home/matt/scripts/screen-auto.sh" },
-   { "Single", "/home/matt/scripts/screen-single.sh" },
-   { "Dual",   "/home/matt/scripts/screen-dual.sh" },
+   { "Auto",   home_dir .. "/scripts/screen-auto.sh" },
+   { "Single", home_dir .. "/scripts/screen-single.sh" },
+   { "Dual",   home_dir .. "/scripts/screen-dual.sh" },
    { "Arandr", "arandr"}
 }
 

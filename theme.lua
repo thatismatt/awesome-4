@@ -34,6 +34,8 @@ theme.hotkeys_modifiers_fg = "#9900ff"
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 
+theme.useless_gap = 5
+
 -- theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
 theme.menu_height = "24"
 theme.menu_width  = "150"

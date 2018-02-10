@@ -39,7 +39,11 @@ prime.commands = {
       response = function ()
          local help = { "--- Awesome Prime ---", "An improved remote repl for Awesome WM", "Commands:" }
          for id, c in pairs(prime.commands) do
-            table.insert(help, "  :" .. id .. " - " .. c.name)
+            local default_command_note = ""
+            if prime.default_command_id == id then
+               default_command_note = " (default command)"
+            end
+            table.insert(help, "  :" .. id .. " - " .. c.name .. default_command_note)
          end
          return table.concat(help, "\n")
       end

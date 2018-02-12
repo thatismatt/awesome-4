@@ -74,6 +74,11 @@ function parse_request (request)
    return command_id, code
 end
 
+function capture_nils (ok, ...)
+   -- explicitly capture the length as n, see http://lua-users.org/wiki/StoringNilsInTables
+   return { ok = ok, n = select('#', ...), ... }
+end
+
 function process_request (command, code)
    if command.response then
       return command.response()
@@ -92,11 +97,6 @@ function process_request (command, code)
          return tostring(e or "unknown error")
       end
    end
-end
-
-function capture_nils (ok, ...)
-   -- explicitly capture the length as n, see http://lua-users.org/wiki/StoringNilsInTables
-   return { ok = ok, n = select('#', ...), ... }
 end
 
 function initialise ()

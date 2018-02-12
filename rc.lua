@@ -370,9 +370,6 @@ globalkeys = gears.table.join(
 
    awful.key({ modkey, "Control" }, "r", awesome.restart,
       { description = "Reload", group = "awesome" }),
-   awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-      { description = "Quit", group = "awesome" }),
-
    awful.key({ modkey,           }, "]",     function () awful.tag.incmwfact( 0.05) end,
       { description = "increase master width factor", group = "layout" }),
    awful.key({ modkey,           }, "[",     function () awful.tag.incmwfact(-0.05) end,

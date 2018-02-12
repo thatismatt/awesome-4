@@ -37,6 +37,7 @@ theme.hotkeys_modifiers_fg = "#9900ff"
 -- menu_[border_color|border_width]
 
 theme.useless_gap = 5
+theme.notification_icon_size = 36
 
 -- theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
 theme.menu_height = "24"

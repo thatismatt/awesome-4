@@ -9,7 +9,6 @@ awful         = require("awful")
 wibox         = require("wibox")
 beautiful     = require("beautiful")
 naughty       = require("naughty")
-menubar       = require("menubar")
 hotkeys_popup = require("awful.hotkeys_popup").widget
                 require("awful.hotkeys_popup.keys")
 prime         = require("prime")
@@ -191,8 +190,6 @@ menu.launcher = awful.widget.launcher({
       image = beautiful.awesome_icon,
       menu = menu.main
 })
-
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Wibar
@@ -398,21 +395,7 @@ globalkeys = gears.table.join(
 
    -- Prompt
    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-      { description = "run prompt", group = "launcher" }),
-
-   awful.key({ modkey }, "x",
-      function ()
-         awful.prompt.run {
-            prompt       = "Run Lua code: ",
-            textbox      = awful.screen.focused().mypromptbox.widget,
-            exe_callback = awful.util.eval,
-            history_path = awful.util.get_cache_dir() .. "/history_eval"
-         }
-      end,
-      { description = "lua execute prompt", group = "awesome" }),
-   -- Menubar
-   awful.key({ modkey }, "p", function() menubar.show() end,
-      { description = "show the menubar", group = "launcher" })
+      { description = "Run prompt", group = "launcher" })
 )
 
 function tag_next (c)

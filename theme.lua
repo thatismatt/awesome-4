@@ -21,7 +21,7 @@ theme.bg_urgent     = "#ff00ff"
 theme.fg_minimize   = "#555555"
 theme.bg_minimize   = "#222222"
 
-theme.border_width  = "5"
+theme.border_width  = 5
 theme.border_normal = "#444444"
 theme.border_focus  = "#9900ff"
 theme.border_marked = "#ff00ff"
@@ -40,8 +40,8 @@ theme.useless_gap = 5
 theme.notification_icon_size = 36
 
 -- theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = "24"
-theme.menu_width  = "150"
+theme.menu_height = 24
+theme.menu_width  = 150
 
 theme.wallpaper = os.getenv("HOME") .. "/Pictures/wallpaper"
 

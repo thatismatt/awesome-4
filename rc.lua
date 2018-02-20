@@ -33,6 +33,9 @@ do
 end
 -- }}}
 
+-- HACK: reduce notification icon size, workaround for https://github.com/awesomeWM/awesome/issues/1862
+naughty.config.defaults.icon_size = 64
+
 home_dir = os.getenv("HOME")
 
 -- {{{ Prime - extra commands

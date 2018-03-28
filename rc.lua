@@ -76,6 +76,8 @@ emacs = "emacsclient -c -a="
 modkey = "Mod4"
 altkey = "Mod1"
 
+local bindings = {};
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
    awful.layout.suit.tile,
@@ -316,15 +318,15 @@ end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(gears.table.join(
-                awful.button({ }, 3, function () menu.main:toggle() end),
-                awful.button({ }, 4, awful.tag.viewprev),
-                awful.button({ }, 5, awful.tag.viewnext)
-))
+bindings.mouse = gears.table.join(
+   awful.button({ }, 3, function () menu.main:toggle() end),
+   awful.button({ }, 4, awful.tag.viewprev),
+   awful.button({ }, 5, awful.tag.viewnext)
+)
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = gears.table.join(
+bindings.keys = gears.table.join(
    awful.key({ modkey,           }, "s",       hotkeys_popup.show_help,                                { description = "Hotkeys",               group = "awesome" }),
    awful.key({ modkey,           }, "z",       menu.main.toggle_at_corner,                             { description = "Menu",                  group = "awesome" }),
    awful.key({ modkey, "Control" }, "r",       awesome.restart,                                        { description = "Reload",                group = "awesome" }),
@@ -370,7 +372,15 @@ function tag_prev (c)
    client.focus = c
 end
 
-clientkeys = gears.table.join(
+bindings.client = {}
+
+bindings.client.buttons = gears.table.join(
+   awful.button({        }, 1, function (c) client.focus = c ; c:raise() end),
+   awful.button({ modkey }, 1, awful.mouse.client.move),
+   awful.button({ modkey }, 3, awful.mouse.client.resize)
+)
+
+bindings.client.keys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "m",      function (c) c.maximized = not c.maximized ; c:raise() end, { description = "(Un)maximize", group = "client" }),
    awful.key({ modkey, "Shift"   }, "n",      function (c) c.minimized = true end,                        { description = "Minimize",     group = "client" }),
    awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle,                               { description = "(Un)float",    group = "client" }),
@@ -382,7 +392,7 @@ clientkeys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "d",      function (c) debug_client = c end,                          { description = "Debug client", group = "client" })
 )
 
-tag_bindings = utils.flatmap(
+bindings.tags = utils.flatmap(
    utils.range(tags.count),
    function (i)
       return awful.util.table.join(
@@ -415,13 +425,19 @@ tag_bindings = utils.flatmap(
    end
 )
 
-clientbuttons = gears.table.join(
-   awful.button({        }, 1, function (c) client.focus = c ; c:raise() end),
-   awful.button({ modkey }, 1, awful.mouse.client.move),
-   awful.button({ modkey }, 3, awful.mouse.client.resize))
+-- Volume keys
+function volume_key (action)
+   return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end
+end
+bindings.audio = awful.util.table.join(
+   awful.key({ }, "XF86AudioMute",        volume_key("toggle")),
+   awful.key({ }, "XF86AudioRaiseVolume", volume_key("5%+")),
+   awful.key({ }, "XF86AudioLowerVolume", volume_key("5%-"))
+)
 
 -- Set keys
-root.keys(gears.table.join(globalkeys, tag_bindings))
+root.keys(gears.table.join(bindings.keys, bindings.tags, bindings.audio))
+root.buttons(bindings.mouse)
 -- }}}
 
 -- {{{ Rules
@@ -433,8 +449,8 @@ awful.rules.rules = {
                     border_color = beautiful.border_normal,
                     focus = awful.client.focus.filter,
                     raise = true,
-                    keys = clientkeys,
-                    buttons = clientbuttons,
+                    keys = bindings.client.keys,
+                    buttons = bindings.client.buttons,
                     screen = awful.screen.preferred,
                     placement = awful.placement.no_overlap + awful.placement.no_offscreen } },
    { rule = { name = "gsimplecal" },

@@ -13,6 +13,7 @@ hotkeys_popup = require("awful.hotkeys_popup").widget
                 require("awful.hotkeys_popup.keys")
 prime         = require("prime")
 utils         = require("utils")
+bottom_widgets = require("bottom_widgets")
 
 -- {{{ Error handling
 -- Handle runtime errors after startup
@@ -320,6 +321,12 @@ awful.screen.connect_for_each_screen(function (s)
             s.layoutbox,
          },
       }
+
+      -- bottom_widgets on last screen only
+      if s.index == screen.count() then
+         bottom_widgets.init(s)
+      end
+
 end)
 -- }}}
 

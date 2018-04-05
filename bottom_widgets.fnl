@@ -1,0 +1,75 @@
+(local awful (require "awful"))
+(local gears (require "gears"))
+(local upower (require "upower"))
+(local nm (require "nm"))
+(local string string)
+
+(local fu (require "fennel_utils"))
+(local utils (require "utils"))
+
+(defn battery-format
+  [battery]
+  (let [state (. battery :state)
+        percentage (. battery :percentage)
+        seconds-remaining (if (= state "charging")      (. battery :time-to-full)
+                              (= state "discharging")   (. battery :time-to-empty)
+                              (= state "fully-charged") 0)
+        time-remaining (if (> seconds-remaining 3600)
+                           (string.format "(%.1f hrs)" (/ seconds-remaining 3600))
+                           (> seconds-remaining 60)
+                           (string.format "(%.1f mins)" (/ seconds-remaining 60))
+                           (> seconds-remaining 0)
+                           (string.format "(%.1f secs)" seconds-remaining)
+                           "")]
+    (string.format "Battery: %s %s%% %s"
+                   state percentage time-remaining)))
+
+(defn battery-widget
+  []
+  (let [textbox (wibox.widget {:markup "Loading..."
+                               :widget wibox.widget.textbox})
+        display (fn []
+                  (->> (upower.battery-info)
+                       (battery-format)
+                       (set textbox.text)))]
+    (display)
+    (gears.timer
+     {:autostart true
+      :timeout 30
+      :callback display})
+    (wibox.container.margin textbox
+                            5 5 5 5)))
+
+(defn network-format
+  [network]
+  (.. "Network: "
+      (->> network
+           (fu.map (fn [x] (. x :interface)))
+           (fu.join " "))))
+
+(defn network-widget
+  []
+  (let [textbox (wibox.widget {:markup "Loading..."
+                               :widget wibox.widget.textbox})
+        display (fn []
+                  (->> (nm.network-info)
+                       (network-format)
+                       (set textbox.text)))]
+    (display)
+    (gears.timer
+     {:autostart true
+      :timeout 30
+      :callback display})
+    (wibox.container.margin textbox
+                            5 5 5 5)))
+
+(defn init
+  [screen]
+  (let [wibox-bottom (awful.wibar {:position "bottom"
+                                   :screen screen})]
+    (: wibox-bottom :setup
+       {:layout wibox.layout.align.horizontal
+        1 (battery-widget)
+        2 (network-widget)})))
+
+{:init init}

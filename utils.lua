@@ -14,8 +14,6 @@ local tonumber = tonumber
 local type = type
 local timer = timer
 
--- module("utils")
-
 local utils = {}
 
 utils.notify = function (msg)

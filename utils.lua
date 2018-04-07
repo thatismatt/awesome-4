@@ -2,7 +2,6 @@
 -- thatismatt's awesome utils --
 --------------------------------
 
-local naughty = require("naughty")
 local gears = require("gears")
 local io = io
 local os = os
@@ -15,10 +14,6 @@ local type = type
 local timer = timer
 
 local utils = {}
-
-utils.notify = function (msg)
-   naughty.notify({ text = tostring(msg), timeout = 0 })
-end
 
 utils.log = function (msg)
    local date = os.date("%Y-%m-%d")

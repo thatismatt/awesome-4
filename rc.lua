@@ -54,7 +54,7 @@ prime.add_commands({
       k = {
          name = "keys",
          handle = function (v)
-            return utils.dump(utils.keys(v))
+            return utils.dump(utils.sort(utils.keys(v)))
          end
       },
       v = {

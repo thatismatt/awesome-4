@@ -124,6 +124,12 @@ utils.tail = function (tbl)
       function (i) return tbl[i] end)
 end
 
+utils.sort = function (tbl)
+   local r = utils.map(tbl, function (x) return x end)
+   table.sort(r)
+   return r
+end
+
 utils.async = function (f)
    local x = timer({ timeout = 0 })
    x:connect_signal("timeout", function() f(); x:stop() end)

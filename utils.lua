@@ -15,11 +15,11 @@ local timer = timer
 
 local utils = {}
 
-utils.log = function (msg)
+utils.log = function (...)
    local date = os.date("%Y-%m-%d")
    local filename = os.getenv("HOME") .. "/tmp/awesome-" .. date .. ".log"
    local f = io.open(filename, "a")
-   f:write(os.date("[%H:%M:%S]") .. " " .. tostring(msg) .. "\n")
+   f:write(os.date("[%H:%M:%S]") .. " " .. table.concat(utils.map({...}, tostring), " ") .. "\n")
    f:close()
 end
 

@@ -427,6 +427,12 @@ bindings.tags = utils.flatmap(
    end
 )
 
+-- TODO: Brightness
+-- bindings.brightness = gears.table.join(
+--    awful.key({ }, "XF86MonBrightnessUp",   ???),
+--    awful.key({ }, "XF86MonBrightnessDown", ???)
+-- )
+
 -- Volume keys
 function volume_key (action)
    return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end

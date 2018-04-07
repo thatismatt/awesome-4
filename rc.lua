@@ -33,6 +33,8 @@ do
 end
 -- }}}
 
+awesome.connect_signal("debug::deprecation", utils.log)
+
 -- HACK: reduce notification icon size, workaround for https://github.com/awesomeWM/awesome/issues/1862
 naughty.config.defaults.icon_size = 64
 

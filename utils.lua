@@ -3,7 +3,7 @@
 --------------------------------
 
 local naughty = require("naughty")
-local awful = require("awful")
+local gears = require("gears")
 local io = io
 local os = os
 local table = table
@@ -96,7 +96,7 @@ end
 utils.concat = function (tbls)
    local r = {}
    for k, v in pairs(tbls) do
-      r = awful.util.table.join(r, v)
+      r = gears.table.join(r, v)
    end
    return r
 end

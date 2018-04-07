@@ -395,7 +395,7 @@ bindings.client.keys = gears.table.join(
 bindings.tags = utils.flatmap(
    utils.range(tags.count),
    function (i)
-      return awful.util.table.join(
+      return gears.table.join(
          awful.key({ modkey }, i,
             function ()
                tags[i]:view_only()
@@ -429,7 +429,7 @@ bindings.tags = utils.flatmap(
 function volume_key (action)
    return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end
 end
-bindings.audio = awful.util.table.join(
+bindings.audio = gears.table.join(
    awful.key({ }, "XF86AudioMute",        volume_key("toggle")),
    awful.key({ }, "XF86AudioRaiseVolume", volume_key("5%+")),
    awful.key({ }, "XF86AudioLowerVolume", volume_key("5%-"))

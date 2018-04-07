@@ -143,7 +143,11 @@ function focus_raise (direction)
       if client_to_focus then
          client.focus = client_to_focus
          client.focus:raise()
-         awful.screen.focus(client_to_focus.screen)
+         -- HACK: try to stop the mouse pointer "jumping"
+         -- TODO: fix the case where the mouse isn't over the tasklist on the other screen
+         if awful.screen.focused() ~= client_to_focus.screen then
+            awful.screen.focus(client_to_focus.screen)
+         end
       end
    end
 end

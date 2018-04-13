@@ -44,7 +44,9 @@
   [network]
   (.. "Network: "
       (->> network
-           (fu.map (fn [x] (. x :interface)))
+           (fu.map (fn [x] (.. (. x :interface)
+                               " "
+                               (. x :connection))))
            (fu.join " "))))
 
 (defn network-widget

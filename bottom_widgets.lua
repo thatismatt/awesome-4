@@ -51,7 +51,7 @@ end
 local battery_widget = _1_
 local function _2_(network)
   local function _3_(x)
-    return x[("interface")]
+    return (x[("interface")] .. (" ") .. x[("connection")])
   end
   return (("Network: ") .. fu.join((" "), fu.map(_3_, network)))
 end

@@ -438,12 +438,6 @@ bindings.tags = utils.flatmap(
    end
 )
 
--- TODO: Brightness
--- bindings.brightness = gears.table.join(
---    awful.key({ }, "XF86MonBrightnessUp",   ???),
---    awful.key({ }, "XF86MonBrightnessDown", ???)
--- )
-
 -- Volume keys
 function volume_key (action)
    return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end
@@ -454,8 +448,17 @@ bindings.audio = gears.table.join(
    awful.key({ }, "XF86AudioLowerVolume", volume_key("5%-"))
 )
 
+-- Backlight Keys -- requires: https://github.com/haikarainen/light
+function backlight_key (action)
+   return function () awful.spawn("light " .. action, false) end
+end
+bindings.backlight = gears.table.join(
+   awful.key({ }, "XF86MonBrightnessUp",   backlight_key("-A 5")),
+   awful.key({ }, "XF86MonBrightnessDown", backlight_key("-U 5"))
+)
+
 -- Set keys
-root.keys(gears.table.join(bindings.keys, bindings.tags, bindings.audio))
+root.keys(gears.table.join(bindings.keys, bindings.tags, bindings.audio, bindings.backlight))
 root.buttons(bindings.mouse)
 -- }}}
 

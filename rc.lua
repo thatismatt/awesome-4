@@ -165,7 +165,7 @@ menu.awesome = {
    { "Manual",  terminal .. " -e man awesome" },
    { "Hotkeys", function () return false, hotkeys_popup.show_help end },
    { "Restart", awesome.restart },
-   { "Quit",    awesome.quit }
+   { "Quit",    function() awesome.quit() end}
 }
 
 menu.power = {

@@ -28,6 +28,9 @@
 ;;  device-type = "WIFI"
 ;; }
 
-;; TODO: (: client :get_connectivity) "FULL"
+(defn connectivity
+  []
+  (: client :get_connectivity))
 
-{:network-info network-info}
+{:network-info network-info
+ :connectivity connectivity}

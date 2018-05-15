@@ -41,20 +41,26 @@
                             5 5 5 5)))
 
 (defn network-format
-  [network]
-  (.. "Network: "
-      (->> network
-           (fu.map (fn [x] (.. (. x :interface)
-                               " "
-                               (. x :connection))))
-           (fu.join " "))))
+  [data]
+  (let [connectivity (. data :connectivity)
+        network-info (. data :network-info)]
+    (.. "Network: "
+        (if (= connectivity "FULL")
+            ""
+            (.. connectivity " "))
+        (->> network-info
+             (fu.map (fn [x] (.. (. x :interface)
+                                 " "
+                                 (. x :connection))))
+             (fu.join " ")))))
 
 (defn network-widget
   []
   (let [textbox (wibox.widget {:markup "Loading..."
                                :widget wibox.widget.textbox})
         display (fn []
-                  (->> (nm.network-info)
+                  (->> {:network-info (nm.network-info)
+                        :connectivity (nm.connectivity)}
                        (network-format)
                        (set textbox.text)))]
     (display)

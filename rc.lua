@@ -102,6 +102,15 @@ awful.layout.layouts = {
 }
 -- }}}
 
+-- {{{ Scripts
+scripts = {}
+scripts.dir = home_dir .. "/scripts"
+scripts.screen_auto   = scripts.dir .. "/screen-auto.sh"
+scripts.screen_dual   = scripts.dir .. "/screen-dual.sh"
+scripts.screen_single = scripts.dir .. "/screen-single.sh"
+scripts.screen_mirror = scripts.dir .. "/screen-mirror.sh"
+-- }}}
+
 -- {{{ Helper functions
 local function client_menu_toggle()
    local instance = nil
@@ -175,9 +184,10 @@ menu.power = {
 }
 
 menu.screens = {
-   { "Auto",   home_dir .. "/scripts/screen-auto.sh" },
-   { "Single", home_dir .. "/scripts/screen-single.sh" },
-   { "Dual",   home_dir .. "/scripts/screen-dual.sh" },
+   { "Auto",   scripts.screen_auto },
+   { "Single", scripts.screen_single },
+   { "Dual",   scripts.screen_dual },
+   { "Mirror", scripts.screen_mirror },
    { "Arandr", "arandr"}
 }
 
@@ -341,8 +351,9 @@ bindings.mouse = gears.table.join(
 -- {{{ Key bindings
 bindings.keys = gears.table.join(
    awful.key({ modkey,           }, "s",       hotkeys_popup.show_help,                                { description = "Hotkeys",               group = "awesome" }),
+   awful.key({ modkey, "Control" }, "s",       function  () awful.spawn(scripts.screen_auto) end,      { description = "Auto Detect Screens",   group = "screen" }),
    awful.key({ modkey,           }, "z",       menu.main.toggle_at_corner,                             { description = "Menu",                  group = "awesome" }),
-   awful.key({ modkey, "Control" }, "r",       awesome.restart,                                        { description = "Reload",                group = "awesome" }),
+   awful.key({ modkey, "Control" }, "r",       awesome.restart,                                        { description = "Restart",               group = "awesome" }),
    awful.key({ modkey,           }, "t",       function () awful.spawn(terminal) end,                  { description = "Terminal",              group = "launcher" }),
    awful.key({ modkey,           }, "e",       function () awful.spawn(emacs) end,                     { description = "Emacs",                 group = "launcher" }),
    awful.key({ modkey,           }, "w",       function () awful.spawn("x-www-browser") end,           { description = "Web Browser",           group = "launcher" }),

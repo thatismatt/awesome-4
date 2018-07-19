@@ -112,7 +112,7 @@ scripts.screen_mirror = scripts.dir .. "/screen-mirror.sh"
 -- }}}
 
 -- {{{ Helper functions
-local function client_menu_toggle()
+local function client_menu_toggle ()
    local instance = nil
    return function ()
       if instance and instance.wibox.visible then
@@ -174,7 +174,7 @@ menu.awesome = {
    { "Manual",  terminal .. " -e man awesome" },
    { "Hotkeys", function () return false, hotkeys_popup.show_help end },
    { "Restart", awesome.restart },
-   { "Quit",    function() awesome.quit() end}
+   { "Quit",    function () awesome.quit() end}
 }
 
 menu.power = {
@@ -257,8 +257,7 @@ local tasklist_buttons = gears.table.join(
    awful.button({ }, 4, focus_raise(-1)),
    awful.button({ }, 5, focus_raise(1)))
 
-local function set_wallpaper(s)
-   -- Wallpaper
+local function set_wallpaper (s)
    if beautiful.wallpaper then
       local wallpaper = beautiful.wallpaper
       -- If wallpaper is a function, call it with the screen
@@ -351,7 +350,7 @@ bindings.mouse = gears.table.join(
 -- {{{ Key bindings
 bindings.keys = gears.table.join(
    awful.key({ modkey,           }, "s",       hotkeys_popup.show_help,                                { description = "Hotkeys",               group = "awesome" }),
-   awful.key({ modkey, "Control" }, "s",       function  () awful.spawn(scripts.screen_auto) end,      { description = "Auto Detect Screens",   group = "screen" }),
+   awful.key({ modkey, "Control" }, "s",       function () awful.spawn(scripts.screen_auto) end,       { description = "Auto Detect Screens",   group = "screen" }),
    awful.key({ modkey,           }, "z",       menu.main.toggle_at_corner,                             { description = "Menu",                  group = "awesome" }),
    awful.key({ modkey, "Control" }, "r",       awesome.restart,                                        { description = "Restart",               group = "awesome" }),
    awful.key({ modkey,           }, "t",       function () awful.spawn(terminal) end,                  { description = "Terminal",              group = "launcher" }),

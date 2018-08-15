@@ -341,9 +341,7 @@ end)
 
 -- {{{ Mouse bindings
 bindings.mouse = gears.table.join(
-   awful.button({ }, 3, function () menu.main:toggle() end),
-   awful.button({ }, 4, awful.tag.viewprev),
-   awful.button({ }, 5, awful.tag.viewnext)
+   awful.button({ }, 3, function () menu.main:toggle() end)
 )
 -- }}}
 

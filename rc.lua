@@ -432,7 +432,7 @@ bindings.tags = utils.flatmap(
          awful.key({ modkey }, i,
             function ()
                tags[i]:view_only()
-               awful.screen.focus(awful.tag.getscreen(tags[i])) -- move mouse to tag's screen
+               awful.screen.focus(tags[i].screen) -- move mouse to tag's screen
             end,
             { description = "View tag #" .. i, group = "tag" }),
          awful.key({ modkey, "Shift" }, i,

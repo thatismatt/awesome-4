@@ -28,6 +28,7 @@ do
          naughty.notify({ preset = naughty.config.presets.critical,
                           title = "Oops, an error happened!",
                           text = tostring(err) })
+         utils.log("Runtime error: \n" .. tostring(err))
          in_error = false
       end
    )

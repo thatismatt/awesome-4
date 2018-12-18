@@ -5,7 +5,7 @@
 
 (local client (nm-glib.Client))
 
-(defn network-info
+(fn network-info
   []
   (->> (: client :get_devices)
        (fu.map (fn [d]
@@ -28,7 +28,7 @@
 ;;  device-type = "WIFI"
 ;; }
 
-(defn connectivity
+(fn connectivity
   []
   (: client :get_connectivity))
 

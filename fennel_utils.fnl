@@ -3,45 +3,45 @@
 (local next next)
 (local type type)
 
-(defn number?
+(fn number?
   [x]
   (= (type x) "number"))
 
-(defn string?
+(fn string?
   [x]
   (= (type x) "string"))
 
-(defn table?
+(fn table?
   [x]
   (= (type x) "table"))
 
-(defn userdata?
+(fn userdata?
   [x]
   (= (type x) "userdata"))
 
-(defn inc
+(fn inc
   [i]
   (+ i 1))
 
-(defn dec
+(fn dec
   [i]
   (- i 1))
 
-(defn iter->table
+(fn iter->table
   [it]
   (let [t {}]
     (each [k v it]
       (tset t k v))
     t))
 
-(defn map
+(fn map
   [f tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
       (tset r k (f v)))
     r))
 
-(defn filter
+(fn filter
   [f tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
@@ -49,25 +49,25 @@
         (tset r k v)))
     r))
 
-(defn vals
+(fn vals
   [tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
       (table.insert r v))
     r))
 
-(defn first
+(fn first
   [tbl]
   (let [(_ v) (next tbl)]
     v))
 
-(defn second
+(fn second
   [tbl]
   (let [(k v1) (next tbl)
         (_ v2) (next tbl k)]
     v2))
 
-(defn nth
+(fn nth
   [n tbl]
   (var n n)
   (var k nil)
@@ -77,14 +77,14 @@
   (let [(_ v) (next tbl k)]
     v))
 
-(defn join
+(fn join
   [sep tbl]
   (let [[sep tbl] (if tbl [sep tbl] ["" sep])] ;; sep is optional
     (-> tbl
         (vals) ;; table.concat does not work with non-contiguous keys
         (table.concat (or sep "")))))
 
-(defn range
+(fn range
   [from to step]
   (let [step (if (number? step) step 1)
         [from to] (if (number? to)
@@ -96,7 +96,7 @@
       (table.insert r i))
     r))
 
-;; (defn find
+;; (fn find
 ;;   [f tbl]
 ;;   (var k nil)
 ;;   (var v nil)

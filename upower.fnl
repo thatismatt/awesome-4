@@ -4,7 +4,7 @@
 
 (local client (upower-glib.Client))
 
-(defn battery-info
+(fn battery-info
   []
   (->> (: client :get_devices)
        (fu.map (fn [d]

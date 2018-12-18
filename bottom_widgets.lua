@@ -9,21 +9,21 @@ local function battery_format(battery)
   local state = battery.state
   local percentage = battery.percentage
   local function _0_()
-    if (state) == ("charging") then
+    if (state == "charging") then
       return battery["time-to-full"]
-    elseif (state) == ("discharging") then
+    elseif (state == "discharging") then
       return battery["time-to-empty"]
-    elseif (state) == ("fully-charged") then
+    elseif (state == "fully-charged") then
       return 0
     end
   end
   local seconds_remaining = _0_()
   local function _1_()
-    if (seconds_remaining) > (3600) then
+    if (seconds_remaining > 3600) then
       return string.format("(%.1f hrs)", (seconds_remaining / 3600))
-    elseif (seconds_remaining) > (60) then
+    elseif (seconds_remaining > 60) then
       return string.format("(%.1f mins)", (seconds_remaining / 60))
-    elseif (seconds_remaining) > (0) then
+    elseif (seconds_remaining > 0) then
       return string.format("(%.1f secs)", seconds_remaining)
     else
       return ""
@@ -32,24 +32,22 @@ local function battery_format(battery)
   local time_remaining = _1_()
   return string.format("Battery: %s %s%% %s", state, percentage, time_remaining)
 end
-do local _ = battery_format end
 local function battery_widget()
-  local textbox = wibox.widget(({markup = "Loading...", widget = wibox.widget.textbox}))
+  local textbox = wibox.widget({markup = "Loading...", widget = wibox.widget.textbox})
   local function _0_()
     textbox.text = battery_format(upower["battery-info"]())
     return nil
   end
   local display = _0_
   display()
-  gears.timer(({autostart = true, callback = display, timeout = 30}))
+  gears.timer({autostart = true, callback = display, timeout = 30})
   return wibox.container.margin(textbox, 5, 5, 5, 5)
 end
-do local _ = battery_widget end
 local function network_format(data)
   local connectivity = data.connectivity
   local network_info = data["network-info"]
   local function _0_()
-    if (connectivity) == ("FULL") then
+    if (connectivity == "FULL") then
       return ""
     else
       return (connectivity .. " ")
@@ -60,22 +58,19 @@ local function network_format(data)
   end
   return ("Network: " .. _0_() .. fu.join(" ", fu.map(_1_, network_info)))
 end
-do local _ = network_format end
 local function network_widget()
-  local textbox = wibox.widget(({markup = "Loading...", widget = wibox.widget.textbox}))
+  local textbox = wibox.widget({markup = "Loading...", widget = wibox.widget.textbox})
   local function _0_()
-    textbox.text = network_format(({["network-info"] = nm["network-info"](), connectivity = nm.connectivity()}))
+    textbox.text = network_format({["network-info"] = nm["network-info"](), connectivity = nm.connectivity()})
     return nil
   end
   local display = _0_
   display()
-  gears.timer(({autostart = true, callback = display, timeout = 30}))
+  gears.timer({autostart = true, callback = display, timeout = 30})
   return wibox.container.margin(textbox, 5, 5, 5, 5)
 end
-do local _ = network_widget end
 local function init(screen)
-  local wibox_bottom = awful.wibar(({position = "bottom", screen = screen}))
-  return wibox_bottom:setup(({battery_widget(), network_widget(), layout = wibox.layout.align.horizontal}))
+  local wibox_bottom = awful.wibar({position = "bottom", screen = screen})
+  return wibox_bottom:setup({battery_widget(), network_widget(), layout = wibox.layout.align.horizontal})
 end
-do local _ = init end
-return ({init = init})
+return {init = init}

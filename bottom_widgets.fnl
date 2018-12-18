@@ -7,7 +7,7 @@
 (local fu (require "fennel_utils"))
 (local utils (require "utils"))
 
-(defn battery-format
+(fn battery-format
   [battery]
   (let [state (. battery :state)
         percentage (. battery :percentage)
@@ -24,7 +24,7 @@
     (string.format "Battery: %s %s%% %s"
                    state percentage time-remaining)))
 
-(defn battery-widget
+(fn battery-widget
   []
   (let [textbox (wibox.widget {:markup "Loading..."
                                :widget wibox.widget.textbox})
@@ -40,7 +40,7 @@
     (wibox.container.margin textbox
                             5 5 5 5)))
 
-(defn network-format
+(fn network-format
   [data]
   (let [connectivity (. data :connectivity)
         network-info (. data :network-info)]
@@ -54,7 +54,7 @@
                                  (. x :connection))))
              (fu.join " ")))))
 
-(defn network-widget
+(fn network-widget
   []
   (let [textbox (wibox.widget {:markup "Loading..."
                                :widget wibox.widget.textbox})
@@ -71,7 +71,7 @@
     (wibox.container.margin textbox
                             5 5 5 5)))
 
-(defn init
+(fn init
   [screen]
   (let [wibox-bottom (awful.wibar {:position "bottom"
                                    :screen screen})]

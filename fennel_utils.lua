@@ -37,13 +37,9 @@ end
 local function filter(f, tbl)
   local r = {}
   for k, v in pairs(tbl) do
-    local function _0_()
-      if f(v) then
-        r[k] = v
-        return nil
-      end
+    if f(v) then
+      r[k] = v
     end
-    _0_()
   end
   return r
 end
@@ -89,14 +85,12 @@ local function join(sep, tbl)
   return table.concat(vals(tbl), (sep or ""))
 end
 local function range(from, to, step)
-  local function _0_()
-    if number_3f(step) then
-      return step
-    else
-      return 1
-    end
+  local step
+  if number_3f(step) then
+    step = step
+  else
+    step = 1
   end
-  local step = _0_()
   local function _1_()
     if number_3f(to) then
       return {from, to}

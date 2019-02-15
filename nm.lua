@@ -12,12 +12,11 @@ local function network_info()
   end
   local function _2_(d)
     local connection = d:get_active_connection()
-    local function _3_()
-      if connection then
-        return connection:get_id()
-      end
+    local _3_
+    if connection then
+      _3_ = connection:get_id()
     end
-    return {["device-type"] = d["device-type"], connection = _3_(), interface = d.interface, state = d.state}
+    return {["device-type"] = d["device-type"], connection = _3_, interface = d.interface, state = d.state}
   end
   return fu.filter(_0_, fu.filter(_1_, fu.map(_2_, client:get_devices())))
 end

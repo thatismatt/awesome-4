@@ -255,6 +255,8 @@ local function tasklist_buttons (s)
             end
       end),
       awful.button({ }, 2, function (c) c:kill() end),
+      -- alternative to above for when middle click is tricky, e.g. touchpad
+      awful.button({ "Control" }, 3, function (c) c:kill() end),
       awful.button({ }, 3, client_menu_toggle()),
       -- TODO: focus the screen first - e.g. awful.screen.focus(mouse.screen)
       awful.button({ }, 4, function () awful.client.focus.byidx(-1) end),

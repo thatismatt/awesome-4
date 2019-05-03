@@ -2,17 +2,17 @@
 -- thatismatt's awesome config --
 ---------------------------------
 
-gears         = require("gears")
-gfs           = require("gears.filesystem")
-awful         = require("awful")
-                require("awful.autofocus")
-wibox         = require("wibox")
-beautiful     = require("beautiful")
-naughty       = require("naughty")
-hotkeys_popup = require("awful.hotkeys_popup").widget
-                require("awful.hotkeys_popup.keys")
-prime         = require("prime")
-utils         = require("utils")
+gears          = require("gears")
+gfs            = require("gears.filesystem")
+awful          = require("awful")
+                 require("awful.autofocus")
+wibox          = require("wibox")
+beautiful      = require("beautiful")
+naughty        = require("naughty")
+hotkeys_popup  = require("awful.hotkeys_popup").widget
+                 require("awful.hotkeys_popup.keys")
+prime          = require("prime")
+utils          = require("utils")
 bottom_widgets = require("bottom_widgets")
 
 -- {{{ Error handling

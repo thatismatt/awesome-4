@@ -85,7 +85,7 @@ local function join(sep, tbl)
   return table.concat(vals(tbl), (sep or ""))
 end
 local function range(from, to, step)
-  local step
+  local step = step
   if number_3f(step) then
     step = step
   else

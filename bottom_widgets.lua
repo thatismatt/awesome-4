@@ -8,7 +8,7 @@ local utils = require("utils")
 local function battery_format(battery)
   local state = battery.state
   local percentage = battery.percentage
-  local seconds_remaining
+  local seconds_remaining = nil
   if (state == "charging") then
     seconds_remaining = battery["time-to-full"]
   elseif (state == "discharging") then
@@ -16,7 +16,7 @@ local function battery_format(battery)
   elseif (state == "fully-charged") then
     seconds_remaining = 0
   end
-  local time_remaining
+  local time_remaining = nil
   if (seconds_remaining > 3600) then
     time_remaining = string.format("(%.1f hrs)", (seconds_remaining / 3600))
   elseif (seconds_remaining > 60) then
@@ -30,7 +30,7 @@ local function battery_format(battery)
 end
 local function battery_widget()
   local textbox = wibox.widget({markup = "Loading...", widget = wibox.widget.textbox})
-  local display
+  local display = display
   local function _0_()
     textbox.text = battery_format(upower["battery-info"]())
     return nil
@@ -57,7 +57,7 @@ local function network_format(data)
 end
 local function network_widget()
   local textbox = wibox.widget({markup = "Loading...", widget = wibox.widget.textbox})
-  local display
+  local display = display
   local function _0_()
     textbox.text = network_format({["network-info"] = nm["network-info"](), connectivity = nm.connectivity()})
     return nil

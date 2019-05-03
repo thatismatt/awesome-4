@@ -150,23 +150,6 @@ utils.intr = function (tbl)
    return table.concat(lines, "\n")
 end
 
-utils.dump = function (o, indent)
-   indent = indent or ""
-   if type(o) == "table" then
-      local s = "{\n"
-      for k, v in pairs(o) do
-         s = s .. indent .. " " .. tostring(k) .. ' = ' .. utils.dump(v, indent .. " ") .. '\n'
-      end
-      return s .. indent .. "}"
-   elseif type(o) == "string" then
-      return "\"" .. o .. "\""
-   elseif o == nil then
-      return "nil"
-   else
-      return tostring(o)
-   end
-end
-
 utils.read_all = function (cmd)
    local fd = io.popen(cmd)
    local line = fd:read("*all")

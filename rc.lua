@@ -13,6 +13,7 @@ hotkeys_popup  = require("awful.hotkeys_popup").widget
                  require("awful.hotkeys_popup.keys")
 prime          = require("prime")
 utils          = require("utils")
+fennelview     = require("fennelview")
 bottom_widgets = require("bottom_widgets")
 
 -- {{{ Error handling
@@ -46,7 +47,7 @@ home_dir = os.getenv("HOME")
 prime.add_commands({
       d = {
          name = "dump",
-         handle = utils.dump
+         handle = fennelview
       },
       l = {
          name = "log",
@@ -58,13 +59,13 @@ prime.add_commands({
       k = {
          name = "keys",
          handle = function (v)
-            return utils.dump(utils.sort(utils.keys(v)))
+            return fennelview(utils.sort(utils.keys(v)))
          end
       },
       v = {
          name = "vals",
          handle = function (v)
-            return utils.dump(utils.vals(v))
+            return fennelview(utils.vals(v))
          end
       }
 })

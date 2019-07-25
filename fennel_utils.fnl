@@ -2,6 +2,7 @@
 (local pairs pairs)
 (local next next)
 (local type type)
+(local string string)
 
 (fn number?
   [x]
@@ -47,6 +48,13 @@
     (each [k v (pairs tbl)]
       (when (f v)
         (tset r k v)))
+    r))
+
+(fn keys
+  [tbl]
+  (let [r {}]
+    (each [k v (pairs tbl)]
+      (table.insert r k))
     r))
 
 (fn vals
@@ -106,6 +114,10 @@
 ;;   )
 ;;   v)
 
+(fn capitalize
+  [str]
+  (: str :gsub "^%l" string.upper))
+
 {:number? number?
  :string? string?
  :table? table?
@@ -115,6 +127,7 @@
  :iter->table iter->table
  :map map
  :filter filter
+ :keys keys
  :vals vals
  :first first
  :second second
@@ -122,4 +135,5 @@
  :join join
  :range range
  ;; :find find
+ :capitalize capitalize
  }

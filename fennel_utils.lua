@@ -2,6 +2,7 @@ local table = table
 local pairs = pairs
 local next = next
 local type = type
+local string = string
 local function number_3f(x)
   return (type(x) == "number")
 end
@@ -40,6 +41,13 @@ local function filter(f, tbl)
     if f(v) then
       r[k] = v
     end
+  end
+  return r
+end
+local function keys(tbl)
+  local r = {}
+  for k, v in pairs(tbl) do
+    table.insert(r, k)
   end
   return r
 end
@@ -107,4 +115,7 @@ local function range(from, to, step)
   end
   return r
 end
-return {["iter->table"] = iter__3etable, ["number?"] = number_3f, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, dec = dec, filter = filter, first = first, inc = inc, join = join, map = map, nth = nth, range = range, second = second, vals = vals}
+local function capitalize(str)
+  return str:gsub("^%l", string.upper)
+end
+return {["iter->table"] = iter__3etable, ["number?"] = number_3f, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, second = second, vals = vals}

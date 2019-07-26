@@ -57,7 +57,7 @@ function prime.add_commands (cmds)
    end
 end
 
-function parse_request (request)
+local function parse_request (request)
    if request == "" then
       return
    end
@@ -74,12 +74,12 @@ function parse_request (request)
    return command_id, code
 end
 
-function capture_nils (ok, ...)
+local function capture_nils (ok, ...)
    -- explicitly capture the length as n, see http://lua-users.org/wiki/StoringNilsInTables
    return { ok = ok, n = select('#', ...), ... }
 end
 
-function process_request (command, code)
+local function process_request (command, code)
    if command.response then
       return command.response()
    else
@@ -99,7 +99,7 @@ function process_request (command, code)
    end
 end
 
-function initialise ()
+local function initialise ()
    dbus.request_name("session", "thatismatt.awesome")
    dbus.connect_signal(
       "thatismatt.awesome.Prime",

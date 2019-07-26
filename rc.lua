@@ -126,14 +126,14 @@ local function client_menu_toggle ()
    end
 end
 
-function focus_other_screen ()
+local function focus_other_screen ()
    awful.screen.focus_relative(1)
    if client.focus and awful.screen.focused() ~= client.focus.screen then
       client.focus = nil
    end
 end
 
-function restore_and_focus ()
+local function restore_and_focus ()
    local restored = awful.client.restore(mouse.screen)
    if restored then
       client.focus = restored
@@ -141,7 +141,7 @@ function restore_and_focus ()
    end
 end
 
-function focus_raise (direction)
+local function focus_raise (direction)
    return function ()
       local cls = utils.filter(
          utils.flatmap(utils.range(screen.count()), awful.client.visible),
@@ -282,7 +282,7 @@ screen.connect_signal("property::geometry", set_wallpaper)
 tags = { by_screen = {} }
 tags.count = 9
 
-function screen_tags (s, names)
+local function screen_tags (s, names)
    tags.by_screen[s] = awful.tag(names, s, awful.layout.layouts[1])
    for k, v in pairs(names) do
       tags[v] = tags.by_screen[s][k]
@@ -391,7 +391,7 @@ bindings.keys = gears.table.join(
    awful.key({ modkey            }, "r",       function () awful.screen.focused().promptbox:run() end, { description = "Run prompt",            group = "launcher" })
 )
 
-function tag_next (c)
+local function tag_next (c)
    awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client is
                                 -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewnext()
@@ -399,7 +399,7 @@ function tag_next (c)
    client.focus = c
 end
 
-function tag_prev (c)
+local function tag_prev (c)
    awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client is
                                 -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewprev()
@@ -463,7 +463,7 @@ bindings.tags = utils.flatmap(
 )
 
 -- Volume keys
-function volume_key (action)
+local function volume_key (action)
    return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end
 end
 bindings.audio = gears.table.join(
@@ -473,7 +473,7 @@ bindings.audio = gears.table.join(
 )
 
 -- Backlight Keys -- requires: https://github.com/haikarainen/light
-function backlight_key (action)
+local function backlight_key (action)
    return function () awful.spawn("light " .. action, false) end
 end
 bindings.backlight = gears.table.join(

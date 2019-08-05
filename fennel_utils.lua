@@ -44,6 +44,15 @@ local function filter(f, tbl)
   end
   return r
 end
+local function remove(f, tbl)
+  local r = {}
+  for k, v in pairs(tbl) do
+    if not f(v) then
+      r[k] = v
+    end
+  end
+  return r
+end
 local function keys(tbl)
   local r = {}
   for k, v in pairs(tbl) do
@@ -127,4 +136,7 @@ local function seconds__3eduration(secs)
     return string.format("%.1f secs", secs)
   end
 end
-return {["iter->table"] = iter__3etable, ["number?"] = number_3f, ["seconds->duration"] = seconds__3eduration, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, second = second, vals = vals}
+local function bytes__3estring(bytes)
+  return join(map(string.char, bytes))
+end
+return {["bytes->string"] = bytes__3estring, ["iter->table"] = iter__3etable, ["number?"] = number_3f, ["seconds->duration"] = seconds__3eduration, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, remove = remove, second = second, vals = vals}

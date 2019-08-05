@@ -50,6 +50,14 @@
         (tset r k v)))
     r))
 
+(fn remove
+  [f tbl]
+  (let [r {}]
+    (each [k v (pairs tbl)]
+      (when (not (f v))
+        (tset r k v)))
+    r))
+
 (fn keys
   [tbl]
   (let [r {}]
@@ -127,6 +135,10 @@
       ;; else
       (string.format "%.1f secs" secs)))
 
+(fn bytes->string
+  [bytes]
+  (->> bytes (map string.char) (join)))
+
 {:number? number?
  :string? string?
  :table? table?
@@ -136,6 +148,7 @@
  :iter->table iter->table
  :map map
  :filter filter
+ :remove remove
  :keys keys
  :vals vals
  :first first
@@ -146,4 +159,5 @@
  ;; :find find
  :capitalize capitalize
  :seconds->duration seconds->duration
+ :bytes->string bytes->string
  }

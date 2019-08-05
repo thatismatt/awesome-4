@@ -1,22 +1,28 @@
-(local lgi (require "lgi"))
-(local upower-glib (lgi.require "UPowerGlib")) ;; https://lazka.github.io/pgi-docs/UPowerGlib-1.0/index.html
+(local dbus (require "dbus_proxy"))
 (local fu (require "fennel_utils"))
 
-(local client (upower-glib.Client))
+(local device-states
+       {1 :charging
+        2 :discharging
+        3 :empty
+        4 :full})
 
-(fn battery-info
-  []
-  (->> (: client :get_devices)
-       (fu.map (fn [d]
-                 {:kind (-> (. d :kind)
-                            (upower-glib.Device.kind_to_string))
-                  :state (-> (. d :state)
-                             (upower-glib.Device.state_to_string))
-                  :percentage (. d :percentage)
-                  :time-to-full  (. d :time-to-full)
-                  :time-to-empty (. d :time-to-empty)}))
-       (fu.filter (fn [d]
-                    (-> d (. :kind) (= :battery))))
-       (fu.first)))
+(fn create-device
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.UPower"
+                      :interface "org.freedesktop.UPower.Device"
+                      :path path}))
 
-{:battery-info battery-info}
+(fn device->label
+  [device]
+  (let [device-state (. device-states device.State)
+        details (match device-state
+                  :charging    (.. (fu.seconds->duration device.TimeToFull) " to full")
+                  :discharging (.. (fu.seconds->duration device.TimeToEmpty) " to empty")
+                  :full        "full"
+                  :empty       "empty")]
+    (.. "Battery: " device.Percentage "% (" details ")")))
+
+{:create-device create-device
+ :device->label device->label}

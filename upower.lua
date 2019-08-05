@@ -1,14 +1,24 @@
-local lgi = require("lgi")
-local upower_glib = lgi.require("UPowerGlib")
+local dbus = require("dbus_proxy")
 local fu = require("fennel_utils")
-local client = upower_glib.Client()
-local function battery_info()
-  local function _0_(d)
-    return (d.kind == "battery")
-  end
-  local function _1_(d)
-    return {["time-to-empty"] = d["time-to-empty"], ["time-to-full"] = d["time-to-full"], kind = upower_glib.Device.kind_to_string(d.kind), percentage = d.percentage, state = upower_glib.Device.state_to_string(d.state)}
-  end
-  return fu.first(fu.filter(_0_, fu.map(_1_, client:get_devices())))
+local device_states = {"charging", "discharging", "empty", "full"}
+local function create_device(path)
+  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.UPower.Device", name = "org.freedesktop.UPower", path = path})
 end
-return {["battery-info"] = battery_info}
+local function device__3elabel(device)
+  local device_state = device_states[device.State]
+  local details = details
+  do
+    local _0_0 = device_state
+    if (_0_0 == "charging") then
+      details = (fu["seconds->duration"](device.TimeToFull) .. " to full")
+    elseif (_0_0 == "discharging") then
+      details = (fu["seconds->duration"](device.TimeToEmpty) .. " to empty")
+    elseif (_0_0 == "full") then
+      details = "full"
+    elseif (_0_0 == "empty") then
+      details = "empty"
+    end
+  end
+  return ("Battery: " .. device.Percentage .. "% (" .. details .. ")")
+end
+return {["create-device"] = create_device, ["device->label"] = device__3elabel}

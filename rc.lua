@@ -14,7 +14,8 @@ hotkeys_popup  = require("awful.hotkeys_popup").widget
 prime          = require("prime")
 utils          = require("utils")
 fennelview     = require("fennelview")
-bottom_widgets = require("bottom_widgets")
+-- bottom_widgets = require("bottom_widgets")
+status_bar     = require("status_bar")
 
 -- {{{ Error handling
 -- Handle runtime errors after startup
@@ -341,7 +342,8 @@ awful.screen.connect_for_each_screen(function (s)
 
       -- bottom_widgets on last screen only
       if s.index == screen.count() then
-         bottom_widgets.init(s)
+         -- bottom_widgets.init(s)
+         status_bar.init(s)
       end
 
 end)

@@ -1,36 +1,117 @@
-(local lgi (require "lgi"))
-(local nm-glib (lgi.require "NM")) ;; https://developer.gnome.org/libnm/1.0/
-;; see: https://github.com/NetworkManager/NetworkManager/tree/master/examples/lua/lgi
+(local dbus (require "dbus_proxy"))
 (local fu (require "fennel_utils"))
 
-(local client (nm-glib.Client))
+;; https://developer.gnome.org/NetworkManager/unstable/nm-dbus-types.html#NMDeviceState
+(local device-states
+       {0   :unknown
+        10  :unmanaged
+        20  :unavailable
+        30  :disconnected
+        40  :prepare
+        50  :config
+        60  :need-auth
+        70  :ip-config
+        80  :ip-check
+        90  :secondaries
+        100 :activated
+        110 :deactivating
+        120 :failed})
 
-(fn network-info
-  []
-  (->> (: client :get_devices)
-       (fu.map (fn [d]
-                 (let [connection (: d :get_active_connection)]
-                   {:interface (. d :interface)
-                    :device-type (. d :device-type)
-                    :state (. d :state)
-                    :connection (when connection
-                                  (: connection :get_id))})))
-       (fu.filter (fn [d]
-                    (let [dt (. d :device-type)]
-                      (or (= dt :WIFI)
-                          (= dt :ETHERNET)))))
-       (fu.filter (fn [d]
-                    (= (. d :state) :ACTIVATED)))))
+(local device-types
+       {0  :unknown
+        14 :generic
+        1  :ethernet
+        2  :wifi
+        3  :unused1
+        4  :unused2
+        5  :bt
+        6  :olpc-mesh
+        7  :wimax
+        8  :modem
+        9  :infiniband
+        10 :bond
+        11 :vlan
+        12 :adsl
+        13 :bridge
+        15 :team
+        16 :tun
+        17 :ip-tunnel
+        18 :macvlan
+        19 :vxlan
+        20 :veth
+        21 :macsec
+        22 :dummy
+        23 :ppp
+        24 :ovs-interface
+        25 :ovs-port
+        26 :ovs-bridge
+        27 :wpan
+        28 :6lowpan
+        29 :wireguard
+        30 :wifi-p2p})
 
-;; {
-;;  state = "ACTIVATED"
-;;  interface = "wlp6s0"
-;;  device-type = "WIFI"
-;; }
+(local ignored-device-types
+       {;; :generic true ;; NOTE: must be included so the on_properties_change listener can be added
+        :bridge true
+        :tun true})
 
-(fn connectivity
-  []
-  (: client :get_connectivity))
+(fn ignore-device?
+  [device]
+  (->> device.DeviceType
+       (. device-types)
+       (. ignored-device-types)))
 
-{:network-info network-info
- :connectivity connectivity}
+
+(fn generic-device?
+  [device]
+  (->> device.DeviceType
+       (. device-types)
+       (= :generic)))
+
+(fn create-dbus-properties
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.NetworkManager"
+                      :interface "org.freedesktop.DBus.Properties"
+                      :path path}))
+
+(fn create-device
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.NetworkManager"
+                      :interface "org.freedesktop.NetworkManager.Device"
+                      :path path}))
+
+(fn create-wireless-device
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.NetworkManager"
+                      :interface "org.freedesktop.NetworkManager.Device.Wireless"
+                      :path path}))
+
+(fn create-access-point
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.NetworkManager"
+                      :interface "org.freedesktop.NetworkManager.AccessPoint"
+                      :path path}))
+
+(fn device->label
+  [device]
+  (let [device-state (. device-states device.State)
+        device-type  (. device-types device.DeviceType)
+        ap (when (= device-state :activated)
+             (-?> device.object_path
+                  (create-wireless-device)
+                  (. :ActiveAccessPoint)
+                  (create-access-point)))]
+    (.. device.Interface " " device-state " " device-type
+        " " (if ap
+                (.. (fu.bytes->string ap.Ssid) " " ap.Strength "%")
+                 ""))))
+
+{:create-device create-device
+ :device->label device->label
+ :create-dbus-properties create-dbus-properties
+ :ignore-device? ignore-device?
+ :generic-device? generic-device?}

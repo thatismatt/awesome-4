@@ -118,4 +118,13 @@ end
 local function capitalize(str)
   return str:gsub("^%l", string.upper)
 end
-return {["iter->table"] = iter__3etable, ["number?"] = number_3f, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, second = second, vals = vals}
+local function seconds__3eduration(secs)
+  if (secs > 3600) then
+    return string.format("%.1f hrs", (secs / 3600))
+  elseif (secs > 60) then
+    return string.format("%.1f mins", (secs / 60))
+  else
+    return string.format("%.1f secs", secs)
+  end
+end
+return {["iter->table"] = iter__3etable, ["number?"] = number_3f, ["seconds->duration"] = seconds__3eduration, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, second = second, vals = vals}

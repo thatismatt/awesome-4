@@ -118,6 +118,15 @@
   [str]
   (: str :gsub "^%l" string.upper))
 
+(fn seconds->duration
+  [secs]
+  (if (> secs 3600)
+      (string.format "%.1f hrs" (/ secs 3600))
+      (> secs 60)
+      (string.format "%.1f mins" (/ secs 60))
+      ;; else
+      (string.format "%.1f secs" secs)))
+
 {:number? number?
  :string? string?
  :table? table?
@@ -136,4 +145,5 @@
  :range range
  ;; :find find
  :capitalize capitalize
+ :seconds->duration seconds->duration
  }

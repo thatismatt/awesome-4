@@ -61,6 +61,11 @@
        (. device-types)
        (. ignored-device-types)))
 
+(fn device-unavailable?
+  [device]
+  (->> device.State
+       (. device-states)
+       (= :unavailable)))
 
 (fn generic-device?
   [device]
@@ -114,4 +119,5 @@
  :device->label device->label
  :create-dbus-properties create-dbus-properties
  :ignore-device? ignore-device?
- :generic-device? generic-device?}
+ :generic-device? generic-device?
+ :device-unavailable? device-unavailable?}

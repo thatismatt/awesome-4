@@ -28,6 +28,7 @@
                      (fu.remove nm.ignore-device?))
         update-fn #(set textbox.text (->> devices
                                           (fu.remove nm.generic-device?)
+                                          (fu.remove nm.device-unavailable?)
                                           (fu.map nm.device->label)
                                           (fu.join " | ")
                                           (.. "Network: ")))]

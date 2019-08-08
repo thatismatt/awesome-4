@@ -22,7 +22,7 @@ local function network_widget()
   local devices = fu.remove(nm["ignore-device?"], fu.map(nm["create-device"], manager:GetDevices()))
   local update_fn = nil
   local function _0_()
-    textbox.text = ("Network: " .. fu.join(" | ", fu.map(nm["device->label"], fu.remove(nm["generic-device?"], devices))))
+    textbox.text = ("Network: " .. fu.join(" | ", fu.map(nm["device->label"], fu.remove(nm["device-unavailable?"], fu.remove(nm["generic-device?"], devices)))))
     return nil
   end
   update_fn = _0_

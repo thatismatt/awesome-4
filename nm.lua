@@ -6,6 +6,9 @@ local ignored_device_types = {bridge = true, tun = true}
 local function ignore_device_3f(device)
   return ignored_device_types[device_types[device.DeviceType]]
 end
+local function device_unavailable_3f(device)
+  return ("unavailable" == device_states[device.State])
+end
 local function generic_device_3f(device)
   return ("generic" == device_types[device.DeviceType])
 end
@@ -52,4 +55,4 @@ local function device__3elabel(device)
   end
   return (device.Interface .. " " .. device_state .. " " .. device_type .. " " .. _1_())
 end
-return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["device->label"] = device__3elabel, ["generic-device?"] = generic_device_3f, ["ignore-device?"] = ignore_device_3f}
+return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["device->label"] = device__3elabel, ["device-unavailable?"] = device_unavailable_3f, ["generic-device?"] = generic_device_3f, ["ignore-device?"] = ignore_device_3f}

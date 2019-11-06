@@ -2,7 +2,7 @@ local dbus = require("dbus_proxy")
 local fu = require("fennel_utils")
 local device_states = {[0] = "unknown", [100] = "activated", [10] = "unmanaged", [110] = "deactivating", [120] = "failed", [20] = "unavailable", [30] = "disconnected", [40] = "prepare", [50] = "config", [60] = "need-auth", [70] = "ip-config", [80] = "ip-check", [90] = "secondaries"}
 local device_types = {"ethernet", "wifi", "unused1", "unused2", "bt", "olpc-mesh", "wimax", "modem", "infiniband", "bond", "vlan", "adsl", "bridge", "generic", "team", "tun", "ip-tunnel", "macvlan", "vxlan", "veth", "macsec", "dummy", "ppp", "ovs-interface", "ovs-port", "ovs-bridge", "wpan", "6lowpan", "wireguard", "wifi-p2p", [0] = "unknown"}
-local ignored_device_types = {bridge = true, tun = true}
+local ignored_device_types = {bridge = true, tun = true, veth = true}
 local function ignore_device_3f(device)
   return ignored_device_types[device_types[device.DeviceType]]
 end

@@ -53,7 +53,8 @@
 (local ignored-device-types
        {;; :generic true ;; NOTE: must be included so the on_properties_change listener can be added
         :bridge true
-        :tun true})
+        :tun true
+        :veth true})
 
 (fn ignore-device?
   [device]

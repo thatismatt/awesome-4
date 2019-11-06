@@ -2,7 +2,7 @@ local dbus = require("dbus_proxy")
 local fu = require("fennel_utils")
 local device_states = {"charging", "discharging", "empty", "full"}
 local function create_device(path)
-  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.UPower.Device", name = "org.freedesktop.UPower", path = path})
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.UPower.Device", name = "org.freedesktop.UPower", path = path})
 end
 local function device__3elabel(device)
   local device_state = device_states[device.State]

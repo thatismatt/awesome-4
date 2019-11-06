@@ -13,16 +13,16 @@ local function generic_device_3f(device)
   return ("generic" == device_types[device.DeviceType])
 end
 local function create_dbus_properties(path)
-  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.DBus.Properties", name = "org.freedesktop.NetworkManager", path = path})
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.DBus.Properties", name = "org.freedesktop.NetworkManager", path = path})
 end
 local function create_device(path)
-  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.Device", name = "org.freedesktop.NetworkManager", path = path})
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.Device", name = "org.freedesktop.NetworkManager", path = path})
 end
 local function create_wireless_device(path)
-  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.Device.Wireless", name = "org.freedesktop.NetworkManager", path = path})
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.Device.Wireless", name = "org.freedesktop.NetworkManager", path = path})
 end
 local function create_access_point(path)
-  return dbus.Proxy:new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.AccessPoint", name = "org.freedesktop.NetworkManager", path = path})
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.AccessPoint", name = "org.freedesktop.NetworkManager", path = path})
 end
 local function device__3elabel(device)
   local device_state = device_states[device.State]

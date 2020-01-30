@@ -428,6 +428,7 @@ bindings.client.keys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "l",      tag_next,                                                   { description = "Next tag",     group = "client" }),
    awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end,          { description = "Masterify",    group = "client" }),
    awful.key({ modkey, "Shift"   }, "o",      function (c) c:move_to_screen() end,                        { description = "Other screen", group = "client" }),
+   awful.key({ modkey, "Control" }, "q",      function (c) c:kill() end,                                  { description = "Quit",         group = "client" }),
    awful.key({ modkey, "Shift"   }, "d",      function (c) debug_client = c end,                          { description = "Debug client", group = "client" })
 )
 

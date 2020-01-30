@@ -465,14 +465,27 @@ bindings.tags = utils.flatmap(
    end
 )
 
--- Volume keys
-local function volume_key (action)
+-- Audio
+local function amixer_command (action)
    return function () awful.spawn("amixer -q -D pulse set Master " .. action, false) end
 end
+local function mpc_command (action)
+   return function () awful.spawn("mpc " .. action, false) end
+end
+local function mpc_status ()
+   awful.spawn.easy_async("mpc status", function (stdout, stderr, reason, exit_code) naughty.notify({ text = stdout }) end)
+end
 bindings.audio = gears.table.join(
-   awful.key({ }, "XF86AudioMute",        volume_key("toggle")),
-   awful.key({ }, "XF86AudioRaiseVolume", volume_key("5%+")),
-   awful.key({ }, "XF86AudioLowerVolume", volume_key("5%-"))
+   awful.key({                 }, "XF86AudioMute",        amixer_command("toggle"), { description = "Toggle mute",     group = "audio" }),
+   awful.key({                 }, "XF86AudioRaiseVolume", amixer_command("5%+"),    { description = "Increase volume", group = "audio" }),
+   awful.key({                 }, "XF86AudioLowerVolume", amixer_command("5%-"),    { description = "Decrease volume", group = "audio" }),
+   awful.key({                 }, "XF86AudioPlay",        mpc_command("toggle"),    { description = "Play/Pause",      group = "audio" }),
+   awful.key({ modkey          }, "XF86AudioPlay",        mpc_status,               { description = "MPD status",      group = "audio" }),
+   awful.key({ modkey          }, "XF86AudioMute",        mpc_command("toggle"),    { description = "Play/Pause",      group = "audio" }),
+   awful.key({ modkey          }, "XF86AudioRaiseVolume", mpc_command("seek +60"),  { description = "Fastforward",     group = "audio" }),
+   awful.key({ modkey          }, "XF86AudioLowerVolume", mpc_command("seek -60"),  { description = "Rewind",          group = "audio" }),
+   awful.key({ modkey, "Shift" }, "XF86AudioRaiseVolume", mpc_command("next"),      { description = "Next track",      group = "audio" }),
+   awful.key({ modkey, "Shift" }, "XF86AudioLowerVolume", mpc_command("previous"),  { description = "Previous track",  group = "audio" })
 )
 
 -- Backlight Keys -- requires: https://github.com/haikarainen/light

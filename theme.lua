@@ -51,4 +51,11 @@ theme.awesome_icon = gfs.get_dir("config") .. "awesome_icon.png"
 
 -- theme.tasklist_plain_task_name = true
 
+-- see /usr/share/awesome/lib/awful/widget/calendar_popup.lua
+theme.calendar_focus_border_width = 0
+theme.calendar_normal_border_width = 0
+theme.calendar_header_border_width = 0
+theme.calendar_weekday_border_width = 0
+theme.calendar_month_padding = 10
+
 return theme

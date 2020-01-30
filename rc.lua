@@ -219,8 +219,13 @@ menu.launcher = awful.widget.launcher({
 
 -- {{{ Wibar
 -- Create a textclock widget
-textclock = wibox.widget.textclock(" %a %d %b %Y, %H:%M ")
-textclock:buttons(gears.table.join(awful.button({ }, 1, function () awful.spawn("gsimplecal") end)))
+local textclock = wibox.widget.textclock(" %a %d %b %Y, %H:%M ")
+local calendar = awful.widget.calendar_popup.month({ position = "tr", font = beautiful.font })
+local calendar_toggle = function ()
+   calendar:set_screen(mouse.screen)
+   calendar:toggle()
+end
+textclock:buttons(gears.table.join(awful.button({ }, 1, calendar_toggle)))
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -514,9 +519,7 @@ awful.rules.rules = {
                     keys = bindings.client.keys,
                     buttons = bindings.client.buttons,
                     screen = awful.screen.preferred,
-                    placement = awful.placement.no_overlap + awful.placement.no_offscreen } },
-   { rule = { name = "gsimplecal" },
-     properties = { floating = true } }
+                    placement = awful.placement.no_overlap + awful.placement.no_offscreen } }
 }
 -- }}}
 

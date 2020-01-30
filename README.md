@@ -4,6 +4,7 @@
 
 * lua5.3 (apt)
 * liblua5.3-dev (apt)
+* libgirepository1.0-dev (apt)
 * luarocks (3.2.1 or later, not 3.2.0)
   * luarocks.org
 * dbus proxy

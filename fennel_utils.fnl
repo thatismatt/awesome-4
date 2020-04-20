@@ -1,8 +1,3 @@
-(local table table)
-(local pairs pairs)
-(local next next)
-(local type type)
-(local string string)
 
 (fn number?
   [x]

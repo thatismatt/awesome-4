@@ -6,7 +6,7 @@ local function create_device(path)
 end
 local function device__3elabel(device)
   local device_state = device_states[device.State]
-  local details = details
+  local details = nil
   do
     local _0_0 = device_state
     if (_0_0 == "charging") then
@@ -17,6 +17,8 @@ local function device__3elabel(device)
       details = "full"
     elseif (_0_0 == "empty") then
       details = "empty"
+    else
+    details = nil
     end
   end
   return ("Battery: " .. device.Percentage .. "% (" .. details .. ")")

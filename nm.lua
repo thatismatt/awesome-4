@@ -27,7 +27,7 @@ end
 local function device__3elabel(device)
   local device_state = device_states[device.State]
   local device_type = device_types[device.DeviceType]
-  local ap = ap
+  local ap = nil
   if (device_state == "activated") then
     local _0_0 = device.object_path
     if _0_0 then
@@ -45,6 +45,8 @@ local function device__3elabel(device)
     else
       ap = _0_0
     end
+  else
+  ap = nil
   end
   local function _1_()
     if ap then

@@ -1,8 +1,3 @@
-local table = table
-local pairs = pairs
-local next = next
-local type = type
-local string = string
 local function number_3f(x)
   return (type(x) == "number")
 end
@@ -77,16 +72,14 @@ local function second(tbl)
   return v2
 end
 local function nth(n, tbl)
-  local n = n
+  local n0 = n
   local k = nil
-  while (n > 0) do
+  while (n0 > 0) do
     k = next(tbl, k)
-    n = dec(n)
+    n0 = dec(n0)
   end
-  do
-    local _, v = next(tbl, k)
-    return v
-  end
+  local _, v = next(tbl, k)
+  return v
 end
 local function join(sep, tbl)
   local function _0_()
@@ -97,16 +90,16 @@ local function join(sep, tbl)
     end
   end
   local _1_ = _0_()
-  local sep = _1_[1]
-  local tbl = _1_[2]
-  return table.concat(vals(tbl), (sep or ""))
+  local sep0 = _1_[1]
+  local tbl0 = _1_[2]
+  return table.concat(vals(tbl0), (sep0 or ""))
 end
 local function range(from, to, step)
-  local step = step
+  local step0 = nil
   if number_3f(step) then
-    step = step
+    step0 = step
   else
-    step = 1
+    step0 = 1
   end
   local function _1_()
     if number_3f(to) then
@@ -116,10 +109,10 @@ local function range(from, to, step)
     end
   end
   local _2_ = _1_()
-  local from = _2_[1]
-  local to = _2_[2]
+  local from0 = _2_[1]
+  local to0 = _2_[2]
   local r = {}
-  for i = from, to, step do
+  for i = from0, to0, step0 do
     table.insert(r, i)
   end
   return r

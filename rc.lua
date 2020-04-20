@@ -488,7 +488,7 @@ bindings.audio = gears.table.join(
    awful.key({ modkey          }, "XF86AudioRaiseVolume", mpc_command("seek +60"),  { description = "Fastforward",     group = "audio" }),
    awful.key({ modkey          }, "XF86AudioLowerVolume", mpc_command("seek -60"),  { description = "Rewind",          group = "audio" }),
    awful.key({ modkey, "Shift" }, "XF86AudioRaiseVolume", mpc_command("next"),      { description = "Next track",      group = "audio" }),
-   awful.key({ modkey, "Shift" }, "XF86AudioLowerVolume", mpc_command("previous"),  { description = "Previous track",  group = "audio" })
+   awful.key({ modkey, "Shift" }, "XF86AudioLowerVolume", mpc_command("prev"),      { description = "Previous track",  group = "audio" })
 )
 
 -- Backlight Keys -- requires: https://github.com/haikarainen/light

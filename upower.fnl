@@ -22,7 +22,7 @@
                   :discharging (.. (fu.seconds->duration device.TimeToEmpty) " to empty")
                   :full        "full"
                   :empty       "empty")]
-    (.. "Battery: " device.Percentage "% (" details ")")))
+    (.. device.Percentage "% (" details ")")))
 
 {:create-device create-device
  :device->label device->label}

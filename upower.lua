@@ -21,6 +21,6 @@ local function device__3elabel(device)
     details = nil
     end
   end
-  return ("Battery: " .. device.Percentage .. "% (" .. details .. ")")
+  return (device.Percentage .. "% (" .. details .. ")")
 end
 return {["create-device"] = create_device, ["device->label"] = device__3elabel}

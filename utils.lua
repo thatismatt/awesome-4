@@ -150,11 +150,4 @@ utils.intr = function (tbl)
    return table.concat(lines, "\n")
 end
 
-utils.read_all = function (cmd)
-   local fd = io.popen(cmd)
-   local line = fd:read("*all")
-   fd:close()
-   return line
-end
-
 return utils

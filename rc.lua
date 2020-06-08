@@ -308,11 +308,11 @@ awful.screen.connect_for_each_screen(function (s)
       -- Create a tasklist widget
       s.tasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons(s))
 
-      -- Create the wibox
-      s.wibox_top = awful.wibar({ position = "top", screen = s })
+      -- Create the wibar
+      s.wibar_top = awful.wibar({ position = "top", screen = s })
 
-      -- Add widgets to the wibox
-      s.wibox_top:setup {
+      -- Add widgets to the wibar
+      s.wibar_top:setup {
          layout = wibox.layout.align.horizontal,
          { -- Left widgets
             layout = wibox.layout.fixed.horizontal,

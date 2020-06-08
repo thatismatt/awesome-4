@@ -28,6 +28,8 @@ theme.border_marked = "#ff00ff"
 
 theme.hotkeys_modifiers_fg = "#9900ff"
 
+theme.tooltip_border_width = 0 -- removes the transparent gap around tooltips
+
 -- There are other variable sets overriding the default one when defined, the sets are:
 -- [taglist|tasklist]_[bg|fg]_[focus|urgent]
 -- titlebar_[bg|fg]_[normal|focus]

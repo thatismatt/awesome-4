@@ -15,8 +15,7 @@ utils          = require("utils")
 fennelview     = require("fennelview")
 status_bar     = require("status_bar")
 
--- {{{ Error handling
--- Handle runtime errors after startup
+-- Error handling - handle runtime errors after startup
 do
    local in_error = false
    awesome.connect_signal(
@@ -33,7 +32,6 @@ do
       end
    )
 end
--- }}}
 
 awesome.connect_signal("debug::deprecation", utils.log)
 
@@ -42,7 +40,7 @@ naughty.config.defaults.icon_size = 64
 
 home_dir = os.getenv("HOME")
 
--- {{{ Prime - extra commands
+-- Prime - extra commands
 prime.add_commands({
       d = {
          name = "dump",
@@ -69,9 +67,7 @@ prime.add_commands({
       }
 })
 prime.default_command_id = "d"
--- }}}
 
--- {{{ Variable definitions
 beautiful.init(gfs.get_dir("config") .. "theme.lua")
 
 terminal = "x-terminal-emulator"
@@ -101,18 +97,14 @@ awful.layout.layouts = {
    -- awful.layout.suit.corner.se,
    awful.layout.suit.floating,
 }
--- }}}
 
--- {{{ Scripts
 scripts = {}
 scripts.dir = home_dir .. "/scripts"
 scripts.screen_auto   = scripts.dir .. "/screen-auto.sh"
 scripts.screen_dual   = scripts.dir .. "/screen-dual.sh"
 scripts.screen_single = scripts.dir .. "/screen-single.sh"
 scripts.screen_mirror = scripts.dir .. "/screen-mirror.sh"
--- }}}
 
--- {{{ Helper functions
 local function client_menu_toggle ()
    local instance = nil
    return function ()
@@ -162,9 +154,7 @@ local function focus_raise (direction)
       end
    end
 end
--- }}}
 
--- {{{ Menu
 menu = {}
 
 menu.icon = function (dir, name)
@@ -213,9 +203,8 @@ menu.launcher = awful.widget.launcher({
       image = beautiful.awesome_icon,
       menu = menu.main
 })
--- }}}
 
--- {{{ Wibar
+-- Wibar
 -- Create a textclock widget
 local textclock = wibox.widget.textclock(" %a %d %b %Y, %H:%M ")
 local calendar = awful.widget.calendar_popup.month({ position = "tr", font = beautiful.font })
@@ -225,7 +214,6 @@ local calendar_toggle = function ()
 end
 textclock:buttons(gears.table.join(awful.button({ }, 1, calendar_toggle)))
 
--- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
    awful.button({ }, 1, function (t) t:view_only() end),
    awful.button({ modkey }, 1, function (t)
@@ -282,7 +270,6 @@ end
 
 screen.connect_signal("property::geometry", set_wallpaper)
 
--- {{{ Tags
 tags = { by_screen = {} }
 tags.count = 9
 
@@ -299,7 +286,6 @@ if screen.count() == 2 then
 else
    screen_tags(1, utils.range(1, tags.count))
 end
--- }}}
 
 awful.screen.connect_for_each_screen(function (s)
 
@@ -349,15 +335,11 @@ awful.screen.connect_for_each_screen(function (s)
       end
 
 end)
--- }}}
 
--- {{{ Mouse bindings
 bindings.mouse = gears.table.join(
    awful.button({ }, 3, function () menu.main:toggle() end)
 )
--- }}}
 
--- {{{ Key bindings
 bindings.keys = gears.table.join(
    awful.key({ modkey,           }, "s",       hotkeys_popup.show_help,                                { description = "Hotkeys",               group = "awesome" }),
    awful.key({ modkey, "Control" }, "s",       function () awful.spawn(scripts.screen_auto) end,       { description = "Auto Detect Screens",   group = "screen" }),
@@ -502,9 +484,7 @@ bindings.backlight = gears.table.join(
 -- Set keys
 root.keys(gears.table.join(bindings.keys, bindings.tags, bindings.audio, bindings.backlight))
 root.buttons(bindings.mouse)
--- }}}
 
--- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
    -- All clients will match this rule.
@@ -518,10 +498,8 @@ awful.rules.rules = {
                     screen = awful.screen.preferred,
                     placement = awful.placement.no_overlap + awful.placement.no_offscreen } }
 }
--- }}}
 
--- {{{ Signals
--- Signal function to execute when a new client appears.
+-- executed when a new client appears.
 client.connect_signal("manage", function (c)
                          -- Set the windows at the slave,
                          -- i.e. put it at the end of others instead of setting it master.
@@ -537,4 +515,3 @@ end)
 
 client.connect_signal("focus", function (c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function (c) c.border_color = beautiful.border_normal end)
--- }}}

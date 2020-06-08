@@ -1,36 +1,37 @@
-local function number_3f(x)
+local fu = {}
+fu["number?"] = function(x)
   return (type(x) == "number")
 end
-local function string_3f(x)
+fu["string?"] = function(x)
   return (type(x) == "string")
 end
-local function table_3f(x)
+fu["table?"] = function(x)
   return (type(x) == "table")
 end
-local function userdata_3f(x)
+fu["userdata?"] = function(x)
   return (type(x) == "userdata")
 end
-local function inc(i)
+fu.inc = function(i)
   return (i + 1)
 end
-local function dec(i)
+fu.dec = function(i)
   return (i - 1)
 end
-local function iter__3etable(it)
+fu["iter->table"] = function(it)
   local t = {}
   for k, v in it do
     t[k] = v
   end
   return t
 end
-local function map(f, tbl)
+fu.map = function(f, tbl)
   local r = {}
   for k, v in pairs(tbl) do
     r[k] = f(v)
   end
   return r
 end
-local function filter(f, tbl)
+fu.filter = function(f, tbl)
   local r = {}
   for k, v in pairs(tbl) do
     if f(v) then
@@ -39,7 +40,7 @@ local function filter(f, tbl)
   end
   return r
 end
-local function remove(f, tbl)
+fu.remove = function(f, tbl)
   local r = {}
   for k, v in pairs(tbl) do
     if not f(v) then
@@ -48,30 +49,30 @@ local function remove(f, tbl)
   end
   return r
 end
-local function keys(tbl)
+fu.keys = function(tbl)
   local r = {}
   for k, v in pairs(tbl) do
     table.insert(r, k)
   end
   return r
 end
-local function vals(tbl)
+fu.vals = function(tbl)
   local r = {}
   for k, v in pairs(tbl) do
     table.insert(r, v)
   end
   return r
 end
-local function first(tbl)
+fu.first = function(tbl)
   local _, v = next(tbl)
   return v
 end
-local function second(tbl)
+fu.second = function(tbl)
   local k, v1 = next(tbl)
   local _, v2 = next(tbl, k)
   return v2
 end
-local function nth(n, tbl)
+fu.nth = function(n, tbl)
   local n0 = n
   local k = nil
   while (n0 > 0) do
@@ -81,7 +82,7 @@ local function nth(n, tbl)
   local _, v = next(tbl, k)
   return v
 end
-local function join(sep, tbl)
+fu.join = function(sep, tbl)
   local function _0_()
     if tbl then
       return {sep, tbl}
@@ -92,17 +93,17 @@ local function join(sep, tbl)
   local _1_ = _0_()
   local sep0 = _1_[1]
   local tbl0 = _1_[2]
-  return table.concat(vals(tbl0), (sep0 or ""))
+  return table.concat(fu.vals(tbl0), (sep0 or ""))
 end
-local function range(from, to, step)
+fu.range = function(from, to, step)
   local step0 = nil
-  if number_3f(step) then
+  if fu["number?"](step) then
     step0 = step
   else
     step0 = 1
   end
   local function _1_()
-    if number_3f(to) then
+    if fu["number?"](to) then
       return {from, to}
     else
       return {0, from}
@@ -117,10 +118,17 @@ local function range(from, to, step)
   end
   return r
 end
-local function capitalize(str)
-  return str:gsub("^%l", string.upper)
+fu["key-by"] = function(f, tbl)
+  local r = {}
+  for _, v in pairs(tbl) do
+    r[f(v)] = v
+  end
+  return r
 end
-local function seconds__3eduration(secs)
+fu.capitalize = function(str)
+  return string.gsub(str, "^%l", string.upper)
+end
+fu["seconds->duration"] = function(secs)
   if (secs > 3600) then
     return string.format("%.1f hrs", (secs / 3600))
   elseif (secs > 60) then
@@ -129,7 +137,7 @@ local function seconds__3eduration(secs)
     return string.format("%.1f secs", secs)
   end
 end
-local function bytes__3estring(bytes)
-  return join(map(string.char, bytes))
+fu["bytes->string"] = function(bytes)
+  return fu.join(fu.map(string.char, bytes))
 end
-return {["bytes->string"] = bytes__3estring, ["iter->table"] = iter__3etable, ["number?"] = number_3f, ["seconds->duration"] = seconds__3eduration, ["string?"] = string_3f, ["table?"] = table_3f, ["userdata?"] = userdata_3f, capitalize = capitalize, dec = dec, filter = filter, first = first, inc = inc, join = join, keys = keys, map = map, nth = nth, range = range, remove = remove, second = second, vals = vals}
+return fu

@@ -1,43 +1,44 @@
+(local fu {})
 
-(fn number?
+(fn fu.number?
   [x]
   (= (type x) "number"))
 
-(fn string?
+(fn fu.string?
   [x]
   (= (type x) "string"))
 
-(fn table?
+(fn fu.table?
   [x]
   (= (type x) "table"))
 
-(fn userdata?
+(fn fu.userdata?
   [x]
   (= (type x) "userdata"))
 
-(fn inc
+(fn fu.inc
   [i]
   (+ i 1))
 
-(fn dec
+(fn fu.dec
   [i]
   (- i 1))
 
-(fn iter->table
+(fn fu.iter->table
   [it]
   (let [t {}]
     (each [k v it]
       (tset t k v))
     t))
 
-(fn map
+(fn fu.map
   [f tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
       (tset r k (f v)))
     r))
 
-(fn filter
+(fn fu.filter
   [f tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
@@ -45,7 +46,7 @@
         (tset r k v)))
     r))
 
-(fn remove
+(fn fu.remove
   [f tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
@@ -53,32 +54,32 @@
         (tset r k v)))
     r))
 
-(fn keys
+(fn fu.keys
   [tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
       (table.insert r k))
     r))
 
-(fn vals
+(fn fu.vals
   [tbl]
   (let [r {}]
     (each [k v (pairs tbl)]
       (table.insert r v))
     r))
 
-(fn first
+(fn fu.first
   [tbl]
   (let [(_ v) (next tbl)]
     v))
 
-(fn second
+(fn fu.second
   [tbl]
   (let [(k v1) (next tbl)
         (_ v2) (next tbl k)]
     v2))
 
-(fn nth
+(fn fu.nth
   [n tbl]
   (var n n)
   (var k nil)
@@ -88,17 +89,17 @@
   (let [(_ v) (next tbl k)]
     v))
 
-(fn join
+(fn fu.join
   [sep tbl]
   (let [[sep tbl] (if tbl [sep tbl] ["" sep])] ;; sep is optional
     (-> tbl
-        (vals) ;; table.concat does not work with non-contiguous keys
+        (fu.vals) ;; table.concat does not work with non-contiguous keys
         (table.concat (or sep "")))))
 
-(fn range
+(fn fu.range
   [from to step]
-  (let [step (if (number? step) step 1)
-        [from to] (if (number? to)
+  (let [step (if (fu.number? step) step 1)
+        [from to] (if (fu.number? to)
                       [from to]
                       [0 from])
         r {}]
@@ -107,7 +108,7 @@
       (table.insert r i))
     r))
 
-;; (fn find
+;; (fn fu.find
 ;;   [f tbl]
 ;;   (var k nil)
 ;;   (var v nil)
@@ -117,11 +118,18 @@
 ;;   )
 ;;   v)
 
-(fn capitalize
-  [str]
-  (: str :gsub "^%l" string.upper))
+(fn fu.key-by
+  [f tbl]
+  (let [r {}]
+    (each [_ v (pairs tbl)]
+      (tset r (f v) v))
+    r))
 
-(fn seconds->duration
+(fn fu.capitalize
+  [str]
+  (string.gsub str "^%l" string.upper))
+
+(fn fu.seconds->duration
   [secs]
   (if (> secs 3600)
       (string.format "%.1f hrs" (/ secs 3600))
@@ -130,29 +138,8 @@
       ;; else
       (string.format "%.1f secs" secs)))
 
-(fn bytes->string
+(fn fu.bytes->string
   [bytes]
-  (->> bytes (map string.char) (join)))
+  (->> bytes (fu.map string.char) (fu.join)))
 
-{:number? number?
- :string? string?
- :table? table?
- :userdata? userdata?
- :inc inc
- :dec dec
- :iter->table iter->table
- :map map
- :filter filter
- :remove remove
- :keys keys
- :vals vals
- :first first
- :second second
- :nth nth
- :join join
- :range range
- ;; :find find
- :capitalize capitalize
- :seconds->duration seconds->duration
- :bytes->string bytes->string
- }
+fu

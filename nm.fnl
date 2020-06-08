@@ -102,7 +102,7 @@
                       :interface "org.freedesktop.NetworkManager.AccessPoint"
                       :path path}))
 
-(fn device->label
+(fn normalise-device
   [device]
   (let [device-state (. device-states device.State)
         device-type  (. device-types device.DeviceType)
@@ -110,14 +110,17 @@
              (-?> device.object_path
                   (create-wireless-device)
                   (. :ActiveAccessPoint)
-                  (create-access-point)))]
-    (.. device.Interface " " device-state " " device-type
-        " " (if ap
-                (.. (fu.bytes->string ap.Ssid) " " ap.Strength "%")
-                 ""))))
+                  (create-access-point)))
+        result {:interface (.. "" device.Interface)
+                :state device-state
+                :type device-type}]
+    (when ap
+      (tset result :ssid (fu.bytes->string ap.Ssid))
+      (tset result :strength ap.Strength))
+    result))
 
 {:create-device create-device
- :device->label device->label
+ :normalise-device normalise-device
  :create-dbus-properties create-dbus-properties
  :ignore-device? ignore-device?
  :generic-device? generic-device?

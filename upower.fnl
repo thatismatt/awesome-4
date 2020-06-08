@@ -14,15 +14,18 @@
                       :interface "org.freedesktop.UPower.Device"
                       :path path}))
 
-(fn device->label
+(fn normalise-device
   [device]
-  (let [device-state (. device-states device.State)
-        details (match device-state
-                  :charging    (.. (fu.seconds->duration device.TimeToFull) " to full")
-                  :discharging (.. (fu.seconds->duration device.TimeToEmpty) " to empty")
-                  :full        "full"
-                  :empty       "empty")]
-    (.. device.Percentage "% (" details ")")))
+  ;; (fu.map #(utils.log $ (. device $))
+  ;;         ["Type" "Energy" "Model" "EnergyEmpty" "TimeToFull" "WarningLevel" "Luminosity" "EnergyFull"
+  ;;          "Percentage" "IconName" "HasHistory" "Temperature" "NativePath" "Serial" "Voltage" "Vendor"
+  ;;          "IsRechargeable" "UpdateTime" "EnergyFullDesign" "PowerSupply" "IsPresent" "BatteryLevel"
+  ;;          "Online" "HasStatistics" "Technology" "Capacity" "State" "TimeToEmpty" "EnergyRate" ])
+  (let [device-state (. device-states device.State)]
+    {:state device-state
+     :time-to-full device.TimeToFull
+     :time-to-empty device.TimeToEmpty
+     :percentage device.Percentage}))
 
 {:create-device create-device
- :device->label device->label}
+ :normalise-device normalise-device}

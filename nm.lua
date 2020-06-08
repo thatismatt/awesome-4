@@ -24,7 +24,7 @@ end
 local function create_access_point(path)
   return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.AccessPoint", name = "org.freedesktop.NetworkManager", path = path})
 end
-local function device__3elabel(device)
+local function normalise_device(device)
   local device_state = device_states[device.State]
   local device_type = device_types[device.DeviceType]
   local ap = nil
@@ -48,13 +48,11 @@ local function device__3elabel(device)
   else
   ap = nil
   end
-  local function _1_()
-    if ap then
-      return (fu["bytes->string"](ap.Ssid) .. " " .. ap.Strength .. "%")
-    else
-      return ""
-    end
+  local result = {interface = ("" .. device.Interface), state = device_state, type = device_type}
+  if ap then
+    result["ssid"] = fu["bytes->string"](ap.Ssid)
+    result["strength"] = ap.Strength
   end
-  return (device.Interface .. " " .. device_state .. " " .. device_type .. " " .. _1_())
+  return result
 end
-return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["device->label"] = device__3elabel, ["device-unavailable?"] = device_unavailable_3f, ["generic-device?"] = generic_device_3f, ["ignore-device?"] = ignore_device_3f}
+return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["device-unavailable?"] = device_unavailable_3f, ["generic-device?"] = generic_device_3f, ["ignore-device?"] = ignore_device_3f, ["normalise-device"] = normalise_device}

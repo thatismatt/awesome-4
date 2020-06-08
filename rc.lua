@@ -480,13 +480,13 @@ bindings.audio = gears.table.join(
    awful.key({ modkey, "Shift" }, "XF86AudioLowerVolume", mpc_command("prev"),      { description = "Previous track",  group = "audio" })
 )
 
--- Backlight Keys -- requires: https://github.com/haikarainen/light
-local function backlight_key (action)
+-- Backlight -- requires: https://github.com/haikarainen/light
+local function light_command (action)
    return function () awful.spawn("light " .. action, false) end
 end
 bindings.backlight = gears.table.join(
-   awful.key({ }, "XF86MonBrightnessUp",   backlight_key("-A 5")),
-   awful.key({ }, "XF86MonBrightnessDown", backlight_key("-U 5"))
+   awful.key({ }, "XF86MonBrightnessUp",   light_command("-A 5")),
+   awful.key({ }, "XF86MonBrightnessDown", light_command("-U 5"))
 )
 
 -- Set keys

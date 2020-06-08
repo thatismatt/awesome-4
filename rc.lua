@@ -504,7 +504,10 @@ awful.rules.rules = {
                     keys = bindings.client.keys,
                     buttons = bindings.client.buttons,
                     screen = awful.screen.preferred,
-                    placement = awful.placement.no_overlap + awful.placement.no_offscreen } }
+                    placement = awful.placement.no_overlap + awful.placement.no_offscreen } },
+   { rule = { class = "Google-chrome",
+              role = "pop-up" }, -- Chrome "App" clients
+     properties = { floating = false } },
 }
 
 -- executed when a new client appears.

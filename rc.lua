@@ -459,7 +459,13 @@ local function mpc_command (action)
    return function () awful.spawn("mpc " .. action, false) end
 end
 local function mpc_status ()
-   awful.spawn.easy_async("mpc status", function (stdout, stderr, reason, exit_code) naughty.notify({ text = stdout }) end)
+   awful.spawn.easy_async(
+      "mpc status",
+      function (stdout, stderr, reason, exit_code)
+         naughty.notify({ text = string.gsub(stdout, "\n$", ""), -- remove last empty line
+                          icon = "/usr/share/icons/Faenza/apps/64/preferences-sound.png" })
+      end
+   )
 end
 bindings.audio = gears.table.join(
    awful.key({                 }, "XF86AudioMute",        amixer_command("toggle"), { description = "Toggle mute",     group = "audio" }),

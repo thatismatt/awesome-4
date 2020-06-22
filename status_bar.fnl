@@ -77,12 +77,12 @@
                                                                            (= state :full)) "charging")
                                                                  charge-level]))]
                      (set battery.textbox.markup (string.format "%.0f%%" percentage))
-                     (if (= state :charging) (time-to-textbox.set-text
-                                              (fu.seconds->duration time-to-full)
-                                              "until full")
+                     (if (= state :charging)    (time-to-textbox.set-text
+                                                 (fu.seconds->duration time-to-full)
+                                                 "until full")
                          (= state :discharging) (time-to-textbox.set-text
-                                              (fu.seconds->duration time-to-empty)
-                                              "until empty")
+                                                 (fu.seconds->duration time-to-empty)
+                                                 "until empty")
                          (time-to-textbox.set-text "" ""))
                      (set battery.icon.image image))]
     (update-fn)
@@ -127,7 +127,6 @@
                      (when (and (-?> device-data (. :wifi) (. :state) (not= :activated))
                                 (-?> device-data (. :ethernet) (. :state) (not= :activated)))
                        (set wifi.container.visible true))
-                     (utils.log (fennelview device-data.tun))
                      (set vpn.container.visible
                           (-?> device-data (. :tun) (. :state) (= :activated))))
         toggle-wifi-fn #(awful.spawn (.. "nmcli radio wifi " (if wifi.active? "off" "on")) false)]

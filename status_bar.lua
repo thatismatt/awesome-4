@@ -211,7 +211,6 @@ local function network_widget()
     if (_3_() and _5_()) then
       wifi.container.visible = true
     end
-    utils.log(fennelview(device_data.tun))
     do
       local _3_0 = device_data
       if _3_0 then

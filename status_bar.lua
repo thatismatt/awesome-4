@@ -64,9 +64,9 @@ local function battery_widget()
   local update_fn = nil
   local function _0_()
     local _1_ = upower["normalise-device"](device)
+    local percentage = _1_["percentage"]
     local state = _1_["state"]
     local time_to_empty = _1_["time-to-empty"]
-    local percentage = _1_["percentage"]
     local time_to_full = _1_["time-to-full"]
     local charge_level = nil
     if (state == "empty") then
@@ -113,15 +113,16 @@ end
 local function network_widget()
   local wifi = icon_2btextbox("Loading...", "device", "network_wifi")
   local ethernet = icon_2btextbox("Loading...", "social", "public")
-  local manager = nm["create-dbus-properties"]("/org/freedesktop/NetworkManager")
-  local devices = fu.remove(nm["ignore-device?"], fu.map(nm["create-device"], manager:GetDevices()))
+  local vpn = icon_2btextbox("", "action", "lock")
+  local nm_properties = nm["create-dbus-properties"]("/org/freedesktop/NetworkManager")
+  local network_manager = nm["create-network-manager"]("/org/freedesktop/NetworkManager")
   local update_fn = nil
   local function _0_()
     local device_data = nil
     local function _1_(_2410)
       return _2410.type
     end
-    device_data = fu["key-by"](_1_, fu.map(nm["normalise-device"], fu.remove(nm["generic-device?"], devices)))
+    device_data = fu["key-by"](_1_, fu.map(nm["normalise-device"], fu.remove(nm["ignore-device?"], fu.map(nm["create-device"], nm_properties:GetDevices()))))
     do
       local state = nil
       local function _3_()
@@ -143,8 +144,8 @@ local function network_widget()
     end
     do
       local _2_ = (device_data.wifi or {})
-      local state = _2_["state"]
       local ssid = _2_["ssid"]
+      local state = _2_["state"]
       local strength = _2_["strength"]
       local strength_level = nil
       if (state ~= "activated") then
@@ -209,8 +210,27 @@ local function network_widget()
     end
     if (_3_() and _5_()) then
       wifi.container.visible = true
-      return nil
     end
+    utils.log(fennelview(device_data.tun))
+    do
+      local _3_0 = device_data
+      if _3_0 then
+        local _4_0 = _3_0.tun
+        if _4_0 then
+          local _5_0 = _4_0.state
+          if _5_0 then
+            vpn.container.visible = (_5_0 == "activated")
+          else
+            vpn.container.visible = _5_0
+          end
+        else
+          vpn.container.visible = _4_0
+        end
+      else
+        vpn.container.visible = _3_0
+      end
+    end
+    return nil
   end
   update_fn = _0_
   local toggle_wifi_fn = nil
@@ -226,11 +246,9 @@ local function network_widget()
   end
   toggle_wifi_fn = _1_
   update_fn()
-  for _, device in ipairs(devices) do
-    device:on_properties_changed(update_fn)
-  end
+  network_manager:on_properties_changed(update_fn)
   do end (wifi.container):buttons(awful.button({}, 1, toggle_wifi_fn))
-  return wibox.container.margin(wibox.layout.fixed.horizontal(ethernet.container, wifi.container), 5, 5, 5, 5)
+  return wibox.container.margin(wibox.layout.fixed.horizontal(ethernet.container, wifi.container, vpn.container), 5, 5, 5, 5)
 end
 local function mpc_button(image, command)
   local _0_0 = icon_widget("av", image)

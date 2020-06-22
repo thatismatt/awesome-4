@@ -2,18 +2,18 @@ local dbus = require("dbus_proxy")
 local fu = require("fennel_utils")
 local device_states = {[0] = "unknown", [100] = "activated", [10] = "unmanaged", [110] = "deactivating", [120] = "failed", [20] = "unavailable", [30] = "disconnected", [40] = "prepare", [50] = "config", [60] = "need-auth", [70] = "ip-config", [80] = "ip-check", [90] = "secondaries"}
 local device_types = {"ethernet", "wifi", "unused1", "unused2", "bt", "olpc-mesh", "wimax", "modem", "infiniband", "bond", "vlan", "adsl", "bridge", "generic", "team", "tun", "ip-tunnel", "macvlan", "vxlan", "veth", "macsec", "dummy", "ppp", "ovs-interface", "ovs-port", "ovs-bridge", "wpan", "6lowpan", "wireguard", "wifi-p2p", [0] = "unknown"}
-local ignored_device_types = {bridge = true, tun = true, veth = true}
+local ignored_device_types = {bridge = true, generic = true, veth = true}
 local function ignore_device_3f(device)
   return ignored_device_types[device_types[device.DeviceType]]
 end
 local function device_unavailable_3f(device)
   return ("unavailable" == device_states[device.State])
 end
-local function generic_device_3f(device)
-  return ("generic" == device_types[device.DeviceType])
-end
 local function create_dbus_properties(path)
   return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.DBus.Properties", name = "org.freedesktop.NetworkManager", path = path})
+end
+local function create_network_manager(path)
+  return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager", name = "org.freedesktop.NetworkManager", path = path})
 end
 local function create_device(path)
   return (dbus.Proxy):new({bus = dbus.Bus.SYSTEM, interface = "org.freedesktop.NetworkManager.Device", name = "org.freedesktop.NetworkManager", path = path})
@@ -28,7 +28,7 @@ local function normalise_device(device)
   local device_state = device_states[device.State]
   local device_type = device_types[device.DeviceType]
   local ap = nil
-  if (device_state == "activated") then
+  if ((device_type == "wifi") and (device_state == "activated")) then
     local _0_0 = device.object_path
     if _0_0 then
       local _1_0 = create_wireless_device(_0_0)
@@ -55,4 +55,4 @@ local function normalise_device(device)
   end
   return result
 end
-return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["device-unavailable?"] = device_unavailable_3f, ["generic-device?"] = generic_device_3f, ["ignore-device?"] = ignore_device_3f, ["normalise-device"] = normalise_device}
+return {["create-dbus-properties"] = create_dbus_properties, ["create-device"] = create_device, ["create-network-manager"] = create_network_manager, ["device-unavailable?"] = device_unavailable_3f, ["ignore-device?"] = ignore_device_3f, ["normalise-device"] = normalise_device}

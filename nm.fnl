@@ -51,9 +51,8 @@
         30 :wifi-p2p})
 
 (local ignored-device-types
-       {;; :generic true ;; NOTE: must be included so the on_properties_change listener can be added
+       {:generic true
         :bridge true
-        :tun true
         :veth true})
 
 (fn ignore-device?
@@ -68,17 +67,18 @@
        (. device-states)
        (= :unavailable)))
 
-(fn generic-device?
-  [device]
-  (->> device.DeviceType
-       (. device-types)
-       (= :generic)))
-
 (fn create-dbus-properties
   [path]
   (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
                       :name "org.freedesktop.NetworkManager"
                       :interface "org.freedesktop.DBus.Properties"
+                      :path path}))
+
+(fn create-network-manager
+  [path]
+  (: dbus.Proxy :new {:bus dbus.Bus.SYSTEM
+                      :name "org.freedesktop.NetworkManager"
+                      :interface "org.freedesktop.NetworkManager"
                       :path path}))
 
 (fn create-device
@@ -106,7 +106,8 @@
   [device]
   (let [device-state (. device-states device.State)
         device-type  (. device-types device.DeviceType)
-        ap (when (= device-state :activated)
+        ap (when (and (= device-type :wifi)
+                      (= device-state :activated))
              (-?> device.object_path
                   (create-wireless-device)
                   (. :ActiveAccessPoint)
@@ -120,8 +121,8 @@
     result))
 
 {:create-device create-device
+ :create-network-manager create-network-manager
  :normalise-device normalise-device
  :create-dbus-properties create-dbus-properties
  :ignore-device? ignore-device?
- :generic-device? generic-device?
  :device-unavailable? device-unavailable?}

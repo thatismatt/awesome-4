@@ -98,15 +98,12 @@
   (let [;; TODO: merge this two together
         wifi (icon+textbox "Loading..." "device" "network_wifi")
         ethernet (icon+textbox "Loading..." "social" "public")
-        manager (nm.create-dbus-properties "/org/freedesktop/NetworkManager")
-        ;; NOTE: we don't want to display the generic device, but if we don't add the listener the
-        ;;       wifi property changes aren't signalled, see below for where the genereic device is
-        ;;       filtered out
-        devices (->> (: manager :GetDevices)
-                     (fu.map nm.create-device)
-                     (fu.remove nm.ignore-device?))
-        update-fn #(let [device-data (->> devices
-                                          (fu.remove nm.generic-device?)
+        vpn (icon+textbox "" "action" "lock")
+        nm-properties (nm.create-dbus-properties "/org/freedesktop/NetworkManager")
+        network-manager (nm.create-network-manager "/org/freedesktop/NetworkManager")
+        update-fn #(let [device-data (->> (: nm-properties :GetDevices)
+                                          (fu.map nm.create-device)
+                                          (fu.remove nm.ignore-device?)
                                           (fu.map nm.normalise-device)
                                           (fu.key-by #(. $ :type)))]
                      (let [state (or (-?> device-data (. :ethernet) (. :state))
@@ -129,19 +126,22 @@
                        (set wifi.container.visible (= state :activated)))
                      (when (and (-?> device-data (. :wifi) (. :state) (not= :activated))
                                 (-?> device-data (. :ethernet) (. :state) (not= :activated)))
-                       (set wifi.container.visible true)))
+                       (set wifi.container.visible true))
+                     (utils.log (fennelview device-data.tun))
+                     (set vpn.container.visible
+                          (-?> device-data (. :tun) (. :state) (= :activated))))
         toggle-wifi-fn #(awful.spawn (.. "nmcli radio wifi " (if wifi.active? "off" "on")) false)]
     ;; TODO: add tooltip
     ;; (awful.tooltip {:objects [wifi.textbox]
     ;;                 :timer_function #(os.date "Today is %A %B %d %Y\\nThe time is %T")})
     (update-fn)
-    (each [_ device (ipairs devices)]
-      (: device :on_properties_changed update-fn))
+    (: network-manager :on_properties_changed update-fn)
     (: wifi.container :buttons (awful.button {} 1 toggle-wifi-fn))
     (wibox.container.margin
      (wibox.layout.fixed.horizontal
       ethernet.container
-      wifi.container)
+      wifi.container
+      vpn.container)
      5 5 5 5)))
 
 (fn mpc-button

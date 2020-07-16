@@ -122,11 +122,9 @@
                                 state (fu.capitalize state)
                                 "[unknown]"))
                        (set wifi.icon.image (icon-file "device" (.. "signal_wifi_" strength-level)))
-                       (set wifi.active? (= state :activated))
-                       (set wifi.container.visible (= state :activated)))
-                     (when (and (-?> device-data (. :wifi) (. :state) (not= :activated))
-                                (-?> device-data (. :ethernet) (. :state) (not= :activated)))
-                       (set wifi.container.visible true))
+                       (set wifi.active? (= state :activated)))
+                     (set wifi.container.visible (or (-?> device-data (. :wifi) (. :state) (= :activated))
+                                                     (not (-?> device-data (. :ethernet) (. :state) (= :activated)))))
                      (set vpn.container.visible
                           (-?> device-data (. :tun) (. :state) (= :activated))))
         toggle-wifi-fn #(awful.spawn (.. "nmcli radio wifi " (if wifi.active? "off" "on")) false)]

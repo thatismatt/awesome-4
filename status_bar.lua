@@ -170,7 +170,6 @@ local function network_widget()
       end
       wifi.icon.image = icon_file("device", ("signal_wifi_" .. strength_level))
       wifi["active?"] = (state == "activated")
-      wifi.container.visible = (state == "activated")
     end
     local function _3_()
       local _2_0 = device_data
@@ -179,7 +178,7 @@ local function network_widget()
         if _4_0 then
           local _5_0 = _4_0.state
           if _5_0 then
-            return (_5_0 ~= "activated")
+            return (_5_0 == "activated")
           else
             return _5_0
           end
@@ -190,43 +189,42 @@ local function network_widget()
         return _2_0
       end
     end
-    local function _5_()
+    local _5_
+    do
       local _4_0 = device_data
       if _4_0 then
         local _6_0 = _4_0.ethernet
         if _6_0 then
-          local _7_0 = _6_0.state
-          if _7_0 then
-            return (_7_0 ~= "activated")
+          local _8_0 = _6_0.state
+          if _8_0 then
+            _5_ = (_8_0 == "activated")
           else
-            return _7_0
+            _5_ = _8_0
           end
         else
-          return _6_0
+          _5_ = _6_0
         end
       else
-        return _4_0
+        _5_ = _4_0
       end
     end
-    if (_3_() and _5_()) then
-      wifi.container.visible = true
-    end
+    wifi.container.visible = (_3_() or not _5_)
     do
-      local _3_0 = device_data
-      if _3_0 then
-        local _4_0 = _3_0.tun
-        if _4_0 then
-          local _5_0 = _4_0.state
-          if _5_0 then
-            vpn.container.visible = (_5_0 == "activated")
+      local _6_0 = device_data
+      if _6_0 then
+        local _7_0 = _6_0.tun
+        if _7_0 then
+          local _8_0 = _7_0.state
+          if _8_0 then
+            vpn.container.visible = (_8_0 == "activated")
           else
-            vpn.container.visible = _5_0
+            vpn.container.visible = _8_0
           end
         else
-          vpn.container.visible = _4_0
+          vpn.container.visible = _7_0
         end
       else
-        vpn.container.visible = _3_0
+        vpn.container.visible = _6_0
       end
     end
     return nil

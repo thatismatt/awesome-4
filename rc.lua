@@ -117,6 +117,13 @@ local function client_menu_toggle ()
    end
 end
 
+local function focus_screen (s)
+   -- HACK: try to stop the mouse pointer "jumping"
+   if awful.screen.focused() ~= s then
+      awful.screen.focus(s)
+   end
+end
+
 local function focus_other_screen ()
    awful.screen.focus_relative(1)
    if client.focus and awful.screen.focused() ~= client.focus.screen then
@@ -143,14 +150,13 @@ local function focus_raise (direction)
             client_to_focus = cls[awful.util.cycle(#cls, idx + direction)]
          end
       end
+      if not client_to_focus and #cls > 0 then
+         client_to_focus = cls[awful.util.cycle(#cls, direction)]
+      end
       if client_to_focus then
          client.focus = client_to_focus
          client.focus:raise()
-         -- HACK: try to stop the mouse pointer "jumping"
-         -- TODO: fix the case where the mouse isn't over the tasklist on the other screen
-         if awful.screen.focused() ~= client_to_focus.screen then
-            awful.screen.focus(client_to_focus.screen)
-         end
+         focus_screen(client_to_focus.screen)
       end
    end
 end
@@ -251,9 +257,8 @@ local function tasklist_buttons (s)
       -- alternative to above for when middle click is tricky, e.g. touchpad
       awful.button({ "Control" }, 3, function (c) c:kill() end),
       awful.button({ }, 3, client_menu_toggle()),
-      -- TODO: focus the screen first - e.g. awful.screen.focus(mouse.screen)
-      awful.button({ }, 4, function () awful.client.focus.byidx(-1) end),
-      awful.button({ }, 5, function () awful.client.focus.byidx(1)  end)
+      awful.button({ }, 4, function () focus_screen(mouse.screen) ; awful.client.focus.byidx(-1) end),
+      awful.button({ }, 5, function () focus_screen(mouse.screen) ; awful.client.focus.byidx(1)  end)
    )
 end
 
@@ -380,16 +385,16 @@ bindings.keys = gears.table.join(
 )
 
 local function tag_next (c)
-   awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client is
-                                -- associated with the tag for the wrong screen, which is odd!
+   focus_screen(c.screen) -- if the focused screen isn't the client's screen then client is
+                          -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewnext()
    c:tags({ c.screen.selected_tag })
    client.focus = c
 end
 
 local function tag_prev (c)
-   awful.screen.focus(c.screen) -- if the focused screen isn't the client's screen then client is
-                                -- associated with the tag for the wrong screen, which is odd!
+   focus_screen(c.screen) -- if the focused screen isn't the client's screen then client is
+                          -- associated with the tag for the wrong screen, which is odd!
    awful.tag.viewprev()
    c:tags({ c.screen.selected_tag })
    client.focus = c
@@ -425,7 +430,7 @@ bindings.tags = utils.flatmap(
          awful.key({ modkey }, i,
             function ()
                tags[i]:view_only()
-               awful.screen.focus(tags[i].screen) -- move mouse to tag's screen
+               focus_screen(tags[i].screen) -- move mouse to tag's screen
             end,
             { description = "View tag #" .. i, group = "tag" }),
          awful.key({ modkey, "Shift" }, i,

@@ -413,6 +413,7 @@ bindings.client.keys = gears.table.join(
    awful.key({ modkey, "Shift"   }, "n",      function (c) c.minimized = true end,                        { description = "Minimize",     group = "client" }),
    awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle,                               { description = "(Un)float",    group = "client" }),
    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop end,                     { description = "(Un)top",      group = "client" }),
+   awful.key({ modkey, "Shift"   }, "s",      function (c) c.sticky = not c.sticky end,                   { description = "(Un)sticky",   group = "client" }),
    awful.key({ modkey, "Shift"   }, "Left",   tag_prev,                                                   { description = "Previous tag", group = "client" }),
    awful.key({ modkey, "Shift"   }, "Right",  tag_next,                                                   { description = "Next tag",     group = "client" }),
    awful.key({ modkey, "Shift"   }, "j",      tag_prev,                                                   { description = "Previous tag", group = "client" }),

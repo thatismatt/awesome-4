@@ -478,6 +478,7 @@ bindings.audio = gears.table.join(
    awful.key({                 }, "XF86AudioRaiseVolume", amixer_command("5%+"),    { description = "Increase volume", group = "audio" }),
    awful.key({                 }, "XF86AudioLowerVolume", amixer_command("5%-"),    { description = "Decrease volume", group = "audio" }),
    awful.key({                 }, "XF86AudioPlay",        mpc_command("toggle"),    { description = "Play/Pause",      group = "audio" }),
+   awful.key({                 }, "XF86Display",          mpc_status,               { description = "MPD status",      group = "audio" }),
    awful.key({ modkey          }, "XF86AudioPlay",        mpc_status,               { description = "MPD status",      group = "audio" }),
    awful.key({ modkey          }, "XF86AudioMute",        mpc_command("toggle"),    { description = "Play/Pause",      group = "audio" }),
    awful.key({ modkey          }, "XF86AudioRaiseVolume", mpc_command("seek +60"),  { description = "Fastforward",     group = "audio" }),

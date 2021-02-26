@@ -350,6 +350,7 @@ bindings.mouse = gears.table.join(
 bindings.keys = gears.table.join(
    awful.key({ modkey,           }, "s",       hotkeys_popup.show_help,                                { description = "Hotkeys",               group = "awesome" }),
    awful.key({ modkey, "Control" }, "s",       function () awful.spawn(scripts.screen_auto) end,       { description = "Auto Detect Screens",   group = "screen" }),
+   awful.key({ modkey, "Control" }, "m",       function () awful.spawn(scripts.screen_mirror) end,     { description = "Mirror Screens",        group = "screen" }),
    awful.key({ modkey,           }, "z",       menu.main.toggle_at_corner,                             { description = "Menu",                  group = "awesome" }),
    awful.key({ modkey, "Control" }, "r",       awesome.restart,                                        { description = "Restart",               group = "awesome" }),
    awful.key({ modkey,           }, "t",       function () awful.spawn(terminal) end,                  { description = "Terminal",              group = "launcher" }),

@@ -292,6 +292,11 @@ else
    screen_tags(1, utils.range(1, tags.count))
 end
 
+tag.connect_signal(
+   "request::screen",
+   function (t) t.screen = screen.primary end
+)
+
 awful.screen.connect_for_each_screen(function (s)
 
       -- Wallpaper

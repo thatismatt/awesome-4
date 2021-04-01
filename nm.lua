@@ -27,13 +27,13 @@ end
 local function normalise_device(device)
   local device_state = device_states[device.State]
   local device_type = device_types[device.DeviceType]
-  local ap = nil
+  local ap
   if ((device_type == "wifi") and (device_state == "activated")) then
     local _0_0 = device.object_path
     if _0_0 then
       local _1_0 = create_wireless_device(_0_0)
       if _1_0 then
-        local _2_0 = _1_0.ActiveAccessPoint
+        local _2_0 = (_1_0).ActiveAccessPoint
         if _2_0 then
           ap = create_access_point(_2_0)
         else

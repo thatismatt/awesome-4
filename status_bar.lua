@@ -35,7 +35,7 @@ local function system_widget()
   local at_textbox = wibox.widget.textbox("Loading...")
   local os_textbox = two_line_textbox()
   local info = {}
-  local on_info = nil
+  local on_info
   local function _0_(k, v)
     info[k] = v
     at_textbox.text = (info.user .. "@" .. info.host)
@@ -61,14 +61,14 @@ local function battery_widget()
   local battery = icon_2btextbox("Loading...", "device", "battery_unknown")
   local time_to_textbox = two_line_textbox()
   local device = upower["create-device"]("/org/freedesktop/UPower/devices/DisplayDevice")
-  local update_fn = nil
+  local update_fn
   local function _0_()
-    local _1_ = upower["normalise-device"](device)
-    local percentage = _1_["percentage"]
-    local state = _1_["state"]
-    local time_to_empty = _1_["time-to-empty"]
-    local time_to_full = _1_["time-to-full"]
-    local charge_level = nil
+    local _let_0_ = upower["normalise-device"](device)
+    local percentage = _let_0_["percentage"]
+    local state = _let_0_["state"]
+    local time_to_empty = _let_0_["time-to-empty"]
+    local time_to_full = _let_0_["time-to-full"]
+    local charge_level
     if (state == "empty") then
       charge_level = "empty"
     elseif (percentage <= 20) then
@@ -86,14 +86,14 @@ local function battery_widget()
     else
       charge_level = "full"
     end
-    local image = nil
-    local _3_
+    local image
+    local _2_
     if ((state == "charging") or (state == "full")) then
-      _3_ = "charging"
+      _2_ = "charging"
     else
-    _3_ = nil
+    _2_ = nil
     end
-    image = icon_file("device", fu.join("_", {"battery", _3_, charge_level}))
+    image = icon_file("device", fu.join("_", {"battery", _2_, charge_level}))
     battery.textbox.markup = string.format("%.0f%%", percentage)
     if (state == "charging") then
       time_to_textbox["set-text"](fu["seconds->duration"](time_to_full), "until full")
@@ -116,38 +116,39 @@ local function network_widget()
   local vpn = icon_2btextbox("", "action", "lock")
   local nm_properties = nm["create-dbus-properties"]("/org/freedesktop/NetworkManager")
   local network_manager = nm["create-network-manager"]("/org/freedesktop/NetworkManager")
-  local update_fn = nil
+  local update_fn
   local function _0_()
-    local device_data = nil
+    local device_data
     local function _1_(_2410)
-      return _2410.type
+      return (_2410).type
     end
     device_data = fu["key-by"](_1_, fu.map(nm["normalise-device"], fu.remove(nm["ignore-device?"], fu.map(nm["create-device"], nm_properties:GetDevices()))))
     do
-      local state = nil
-      local function _3_()
+      local state
+      local _3_
+      do
         local _2_0 = device_data
         if _2_0 then
-          local _4_0 = _2_0.ethernet
+          local _4_0 = (_2_0).ethernet
           if _4_0 then
-            return _4_0.state
+            _3_ = (_4_0).state
           else
-            return _4_0
+            _3_ = _4_0
           end
         else
-          return _2_0
+          _3_ = _2_0
         end
       end
-      state = (_3_() or "[unknown]")
+      state = (_3_ or "[unknown]")
       ethernet.container.visible = (state == "activated")
       ethernet.textbox.text = fu.capitalize(state)
     end
     do
-      local _2_ = (device_data.wifi or {})
-      local ssid = _2_["ssid"]
-      local state = _2_["state"]
-      local strength = _2_["strength"]
-      local strength_level = nil
+      local _let_0_ = (device_data.wifi or {})
+      local ssid = _let_0_["ssid"]
+      local state = _let_0_["state"]
+      local strength = _let_0_["strength"]
+      local strength_level
       if (state ~= "activated") then
         strength_level = "off"
       elseif (strength <= 20) then
@@ -171,31 +172,32 @@ local function network_widget()
       wifi.icon.image = icon_file("device", ("signal_wifi_" .. strength_level))
       wifi["active?"] = (state == "activated")
     end
-    local function _3_()
+    local _3_
+    do
       local _2_0 = device_data
       if _2_0 then
-        local _4_0 = _2_0.wifi
+        local _4_0 = (_2_0).wifi
         if _4_0 then
-          local _5_0 = _4_0.state
-          if _5_0 then
-            return (_5_0 == "activated")
+          local _6_0 = (_4_0).state
+          if _6_0 then
+            _3_ = (_6_0 == "activated")
           else
-            return _5_0
+            _3_ = _6_0
           end
         else
-          return _4_0
+          _3_ = _4_0
         end
       else
-        return _2_0
+        _3_ = _2_0
       end
     end
     local _5_
     do
       local _4_0 = device_data
       if _4_0 then
-        local _6_0 = _4_0.ethernet
+        local _6_0 = (_4_0).ethernet
         if _6_0 then
-          local _8_0 = _6_0.state
+          local _8_0 = (_6_0).state
           if _8_0 then
             _5_ = (_8_0 == "activated")
           else
@@ -208,13 +210,13 @@ local function network_widget()
         _5_ = _4_0
       end
     end
-    wifi.container.visible = (_3_() or not _5_)
+    wifi.container.visible = (_3_ or not _5_)
     do
       local _6_0 = device_data
       if _6_0 then
-        local _7_0 = _6_0.tun
+        local _7_0 = (_6_0).tun
         if _7_0 then
-          local _8_0 = _7_0.state
+          local _8_0 = (_7_0).state
           if _8_0 then
             vpn.container.visible = (_8_0 == "activated")
           else
@@ -230,7 +232,7 @@ local function network_widget()
     return nil
   end
   update_fn = _0_
-  local toggle_wifi_fn = nil
+  local toggle_wifi_fn
   local function _1_()
     local function _2_()
       if wifi["active?"] then
@@ -244,7 +246,7 @@ local function network_widget()
   toggle_wifi_fn = _1_
   update_fn()
   network_manager:on_properties_changed(update_fn)
-  do end (wifi.container):buttons(awful.button({}, 1, toggle_wifi_fn))
+  ; (wifi.container):buttons(awful.button({}, 1, toggle_wifi_fn))
   return wibox.container.margin(wibox.layout.fixed.horizontal(ethernet.container, wifi.container, vpn.container), 5, 5, 5, 5)
 end
 local function mpc_button(image, command)

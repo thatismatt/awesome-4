@@ -90,13 +90,13 @@ fu.join = function(sep, tbl)
       return {"", sep}
     end
   end
-  local _1_ = _0_()
-  local sep0 = _1_[1]
-  local tbl0 = _1_[2]
+  local _let_0_ = _0_()
+  local sep0 = _let_0_[1]
+  local tbl0 = _let_0_[2]
   return table.concat(fu.vals(tbl0), (sep0 or ""))
 end
 fu.range = function(from, to, step)
-  local step0 = nil
+  local step0
   if fu["number?"](step) then
     step0 = step
   else
@@ -109,9 +109,9 @@ fu.range = function(from, to, step)
       return {0, from}
     end
   end
-  local _2_ = _1_()
-  local from0 = _2_[1]
-  local to0 = _2_[2]
+  local _let_0_ = _1_()
+  local from0 = _let_0_[1]
+  local to0 = _let_0_[2]
   local r = {}
   for i = from0, to0, step0 do
     table.insert(r, i)
